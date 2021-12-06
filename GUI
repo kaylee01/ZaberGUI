@@ -10,10 +10,35 @@ import serial
 
 sg.theme('Reddit')
 
-layout = [
+
+
+with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
+    device_list = connection.detect_devices() 
+    xy_device = device_list[0]
+    z_device = device_list[1]
+
+    axis1 = xy_device.get_axis(1)  # x ?
+    axis2 = xy_device.get_axis(2)  # y ?
+    axis3 = z_device.get_axis(1)
+
+    def home_all():
+        for device in device_list:
+            print("Homing all axes of device with address {}.".format(device.device_address))
+            device.all_axes.home()
+
+
+    layout = [
     [
-        sg.Text("Current position:"),
-        sg.Text(key="-CURRENT-")
+        sg.Text("X position:"),
+        sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-")
+    ],
+    [
+        sg.Text("Y position:"),
+        sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-")
+    ],
+    [
+        sg.Text("Z position:"),
+        sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
     ],
     [
         sg.Button("home", key="-HOME-")],
@@ -33,28 +58,13 @@ layout = [
         sg.Button("right", key="-ZRIGHT-"), 
     ],
     
-]
+    ]
 
-window = sg.Window('Zaber GUI', layout, size = (300,300), element_justification='c')
-
-with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
-    device_list = connection.detect_devices() 
-    xy_device = device_list[0]
-    z_device = device_list[1]
-
-    axis1 = xy_device.get_axis(1)  # x ?
-    axis2 = xy_device.get_axis(2)  # y ?
-    axis3 = z_device.get_axis(1)
-
-    def home_all():
-        for device in device_list:
-            print("Homing all axes of device with address {}.".format(device.device_address))
-            device.all_axes.home()
+    window = sg.Window('Zaber GUI', layout, size = (300,300), element_justification='c')
 
     while True:
         event, values = window.read()
         
-
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == "-XRIGHT-":
@@ -71,4 +81,6 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             axis3.move_relative(-10, Units.LENGTH_MILLIMETRES)
         if event == "-HOME-":
             home_all()
-        window["-CURRENT-"].update(axis1.get_position(Units.LENGTH_MILLIMETRES))
+        window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
+        window["-CURRENTY-"].update("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)))
+        window["-CURRENTZ-"].update("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)))
