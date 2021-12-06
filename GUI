@@ -52,8 +52,6 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         if current_pos - DIST >= 0:
             return True
         return False
-    
-    print(is_in_bounds_l(axis2))
 
     layout = [
     [
@@ -69,21 +67,21 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
     ],
     [
-        sg.Button("home", key="-HOME-")],
+        sg.Button("Home", key="-HOME-")],
     [
-        sg.Button("left", key="-XLEFT-"), 
+        sg.Button("Left", key="-XLEFT-"), 
         sg.Text("X-axis"),
-        sg.Button("right", key="-XRIGHT-"), 
+        sg.Button("Right", key="-XRIGHT-"), 
     ],
     [
-        sg.Button("left", key="-YLEFT-"), 
+        sg.Button("Left", key="-YLEFT-"), 
         sg.Text("Y-axis"),
-        sg.Button("right", key="-YRIGHT-"), 
+        sg.Button("Right", key="-YRIGHT-"), 
     ],
     [
-        sg.Button("left", key="-ZLEFT-"), 
+        sg.Button("Left", key="-ZLEFT-"), 
         sg.Text("Z-axis"),
-        sg.Button("right", key="-ZRIGHT-"), 
+        sg.Button("Right", key="-ZRIGHT-"), 
     ],
     
     ]
@@ -134,6 +132,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         
         if event == "-HOME-":
             home_all()
+            
         window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTY-"].update("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTZ-"].update("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)))
