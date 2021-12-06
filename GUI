@@ -10,6 +10,15 @@ import serial
 
 sg.theme('Reddit')
 
+# max postions in mm
+MAX_X = 151.49909375
+MAX_Y = 151.49909375
+MAX_Z = 40.000047
+
+# move distance in mm
+DIST = 15
+
+
 
 
 with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
@@ -25,7 +34,26 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         for device in device_list:
             print("Homing all axes of device with address {}.".format(device.device_address))
             device.all_axes.home()
+    
+    def is_in_bounds_r(axis):
+        if axis == axis1:
+            max = MAX_X
+        if axis == axis2:
+            max = MAX_Y
+        if axis == axis3:
+            max = MAX_Z
+        current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
+        if current_pos + DIST - max >= 0:
+            return False
+        return True
 
+    def is_in_bounds_l(axis):
+        current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
+        if current_pos - DIST >= 0:
+            return True
+        return False
+    
+    print(is_in_bounds_l(axis2))
 
     layout = [
     [
@@ -67,18 +95,43 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
+
         if event == "-XRIGHT-":
-            axis1.move_relative(10, Units.LENGTH_MILLIMETRES)
+            if (is_in_bounds_r(axis1)):
+                axis1.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES)
+
         if event == "-XLEFT-":
-            axis1.move_relative(-10, Units.LENGTH_MILLIMETRES)
+            if is_in_bounds_l(axis1):
+                axis1.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis1.move_absolute(0)
+            
         if event == "-YRIGHT-":
-            axis2.move_relative(10, Units.LENGTH_MILLIMETRES)
+            if (is_in_bounds_r(axis2)):
+                axis2.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES)
+
         if event == "-YLEFT-":
-            axis2.move_relative(-10, Units.LENGTH_MILLIMETRES)
+            if is_in_bounds_l(axis2):
+                axis2.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis2.move_absolute(0)
+        
         if event == "-ZRIGHT-":
-            axis3.move_relative(10, Units.LENGTH_MILLIMETRES)
+            if (is_in_bounds_r(axis3)):
+                axis3.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES)
+
         if event == "-ZLEFT-":
-            axis3.move_relative(-10, Units.LENGTH_MILLIMETRES)
+            if is_in_bounds_l(axis3):
+                axis3.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+            else:
+                axis3.move_absolute(0)
+        
         if event == "-HOME-":
             home_all()
         window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
