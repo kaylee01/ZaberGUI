@@ -3,7 +3,6 @@ Written by Kaylee Molin (22734429)
 01/12/21
 '''
 
-
 from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
 
@@ -30,29 +29,55 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     # The rest of your program goes here (indented)
 
     xy_device = device_list[0]
+    #print ("\n #### {} #### \n".format(xy_device))
     z_device = device_list[1]
+    #print ("\n #### {} #### \n".format(z_device))
 
     # homes the device
     axis1 = xy_device.get_axis(1) # x ?
-    print(axis1)
+    print ("\n #### {} #### \n".format(axis1))
     axis2 = xy_device.get_axis(2) # y ?
-    print(axis2)
+    print ("\n #### {} #### \n".format(axis2))
     axis3 = z_device.get_axis(1)
-    print(axis3)
+    print ("\n #### {} #### \n".format(axis3))
     #axis1.home()
     #axis2.home()
-    axis3.home()
+    #axis3.home()
 
-    ''' Move the specified axis to an absolute distance (mm)'''
-    def move_abs(axis, distance):
-        if axis != axis1 or axis != axis2 or axis != axis3:
-            print("{} is not a valid axis. Please input axis1, axis2 or axis3.".format(axis))
-        else:
-            axis.move_absolute(distance, Units.LENGTH_MILLIMETRES)
+    #axis1.move_absolute(40, Units.LENGTH_MILLIMETRES)
 
+    def home_all():
+        for device in device_list:
+            print("Homing all axes of device with address {}.".format(device.device_address))
+            device.all_axes.home()
+    
 
-def main():
-    move_abs("ds", 5)
+    ''' Move to specified location in mm'''
+    def move_to_pos(x,y,z):
+        axis1.move_absolute(x, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis2.move_absolute(y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis3.move_absolute(z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        
+        axis1.wait_until_idle()
+        axis2.wait_until_idle()
+        axis3.wait_until_idle()
 
-if __name__ == "__main()__":
+    def main():
+        #home_all()
+        #move_abs("ds", 5)
+        #move_abs(axis3, 40)
+        #move_abs(axis1, 40)
+        #move_abs(axis2, 40)
+
+        #move_to_pos(0,0,0)
+        move_to_pos(5,5,5)
+
+        #axis1.move_velocity(-400, Units.VELOCITY_MILLIMETRES_PER_SECOND)
+        #move_to_pos(0,0,40)
+
+        print(axis3.get_position(Units.LENGTH_MILLIMETRES))
+        #axis1.move_absolute(10000)
+        #axis2.move_relative(10000)
+        #axis3.move_relative(10000)
+    
     main()

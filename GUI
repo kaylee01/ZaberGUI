@@ -1,0 +1,74 @@
+import PySimpleGUI as sg
+from zaber_motion import Library, Units
+from zaber_motion.ascii import Connection
+
+Library.enable_device_db_store()
+
+import sys
+import glob
+import serial
+
+sg.theme('Reddit')
+
+layout = [
+    [
+        sg.Text("Current position:"),
+        sg.Text(key="-CURRENT-")
+    ],
+    [
+        sg.Button("home", key="-HOME-")],
+    [
+        sg.Button("left", key="-XLEFT-"), 
+        sg.Text("X-axis"),
+        sg.Button("right", key="-XRIGHT-"), 
+    ],
+    [
+        sg.Button("left", key="-YLEFT-"), 
+        sg.Text("Y-axis"),
+        sg.Button("right", key="-YRIGHT-"), 
+    ],
+    [
+        sg.Button("left", key="-ZLEFT-"), 
+        sg.Text("Z-axis"),
+        sg.Button("right", key="-ZRIGHT-"), 
+    ],
+    
+]
+
+window = sg.Window('Zaber GUI', layout, size = (300,300), element_justification='c')
+
+with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
+    device_list = connection.detect_devices() 
+    xy_device = device_list[0]
+    z_device = device_list[1]
+
+    axis1 = xy_device.get_axis(1)  # x ?
+    axis2 = xy_device.get_axis(2)  # y ?
+    axis3 = z_device.get_axis(1)
+
+    def home_all():
+        for device in device_list:
+            print("Homing all axes of device with address {}.".format(device.device_address))
+            device.all_axes.home()
+
+    while True:
+        event, values = window.read()
+        
+
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+        if event == "-XRIGHT-":
+            axis1.move_relative(10, Units.LENGTH_MILLIMETRES)
+        if event == "-XLEFT-":
+            axis1.move_relative(-10, Units.LENGTH_MILLIMETRES)
+        if event == "-YRIGHT-":
+            axis2.move_relative(10, Units.LENGTH_MILLIMETRES)
+        if event == "-YLEFT-":
+            axis2.move_relative(-10, Units.LENGTH_MILLIMETRES)
+        if event == "-ZRIGHT-":
+            axis3.move_relative(10, Units.LENGTH_MILLIMETRES)
+        if event == "-ZLEFT-":
+            axis3.move_relative(-10, Units.LENGTH_MILLIMETRES)
+        if event == "-HOME-":
+            home_all()
+        window["-CURRENT-"].update(axis1.get_position(Units.LENGTH_MILLIMETRES))
