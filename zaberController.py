@@ -70,12 +70,15 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         #move_abs(axis2, 40)
 
         #move_to_pos(0,0,0)
-        move_to_pos(5,5,5)
+        #move_to_pos(5,5,5)
+        #axis3.move_max()
+        print("xX " + str(axis3.get_position(Units.LENGTH_MILLIMETRES)))
 
         #axis1.move_velocity(-400, Units.VELOCITY_MILLIMETRES_PER_SECOND)
-        #move_to_pos(0,0,40)
+        move_to_pos(10,10,10)
+        #home_all()
 
-        print(axis3.get_position(Units.LENGTH_MILLIMETRES))
+
         #axis1.move_absolute(10000)
         #axis2.move_relative(10000)
         #axis3.move_relative(10000)

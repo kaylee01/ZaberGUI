@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
+from zaber_motion.ascii import Lockstep
 
 Library.enable_device_db_store()
 
@@ -26,32 +27,30 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     xy_device = device_list[0]
     z_device = device_list[1]
 
-    axis1 = xy_device.get_axis(1)  # x ?
-    axis2 = xy_device.get_axis(2)  # y ?
-    axis3 = z_device.get_axis(1)
+    
 
-    def home_all():
-        for device in device_list:
-            print("Homing all axes of device with address {}.".format(device.device_address))
-            device.all_axes.home()
+    axis1 = xy_device.get_axis(1)  # x
+    axis2 = xy_device.get_axis(2)  # y
+    axis3 = z_device.get_axis(1)   # z
     
     def is_in_bounds_r(axis):
-        if axis == axis1:
-            max = MAX_X
-        if axis == axis2:
-            max = MAX_Y
-        if axis == axis3:
-            max = MAX_Z
+        ''' checks if next step is in bounds '''
+        if axis == axis1:   max = MAX_X
+        if axis == axis2:   max = MAX_Y
+        if axis == axis3:   max = MAX_Z
+        
         current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
         if current_pos + DIST - max >= 0:
             return False
         return True
 
     def is_in_bounds_l(axis):
+        ''' checks if next step is in bounds '''
         current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
         if current_pos - DIST >= 0:
             return True
         return False
+
 
     layout = [
     [
@@ -66,73 +65,135 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         sg.Text("Z position:"),
         sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
     ],
+    [   
+        sg.Text("Set step size:"),
+        sg.InputText(key="-STEP-", size=(5,1)),
+        sg.Text("mm"),
+        sg.Button("OK", key="-OK-"),
+        
+    ],
     [
-        sg.Button("Home", key="-HOME-")],
+        sg.Button("STOP pls", key="-STOP-", )
+    ],
     [
+        sg.Button("Home", key="-HOME-")
+    ],
+    
+    [
+        sg.Button("End", key="-XLEND-"), 
         sg.Button("Left", key="-XLEFT-"), 
         sg.Text("X-axis"),
         sg.Button("Right", key="-XRIGHT-"), 
+        sg.Button("End", key="-XREND-"), 
     ],
     [
+        sg.Button("End", key="-YLEND-"), 
         sg.Button("Left", key="-YLEFT-"), 
         sg.Text("Y-axis"),
-        sg.Button("Right", key="-YRIGHT-"), 
+        sg.Button("Right", key="-YRIGHT-"),
+        sg.Button("End", key="-YREND-"),  
     ],
     [
+        sg.Button("End", key="-ZLEND-"), 
         sg.Button("Left", key="-ZLEFT-"), 
         sg.Text("Z-axis"),
         sg.Button("Right", key="-ZRIGHT-"), 
+        sg.Button("End", key="-ZREND-"),  
     ],
-    
+    [
+        sg.Text("Move to specific location (x,y,z):"), 
+        sg.InputText(key='-INX-', size=(3,1)), 
+        sg.InputText(key='-INY-', size=(3,1)), 
+        sg.InputText(key='-INZ-', size=(3,1)),
+        sg.Button("OK", key="-OK1-")
+    ]
     ]
 
-    window = sg.Window('Zaber GUI', layout, size = (300,300), element_justification='c')
+    window = sg.Window('Zaber GUI', layout, size = (400,400), element_justification='c')
 
     while True:
         event, values = window.read()
+
+        
+        #sg.popup('You entered', text_input)
         
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
 
+        if event == "-XLEND-":
+            axis1.move_absolute(0, wait_until_idle=False)
+
         if event == "-XRIGHT-":
             if (is_in_bounds_r(axis1)):
-                axis1.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+                axis1.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
-                axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES)
+                axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-XLEFT-":
             if is_in_bounds_l(axis1):
-                axis1.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+                axis1.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis1.move_absolute(0)
+
+        if event == "-XREND-":
+            axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        #####################
+
+        if event == "-YLEND-":
+            axis2.move_absolute(0, wait_until_idle=False)
             
         if event == "-YRIGHT-":
             if (is_in_bounds_r(axis2)):
-                axis2.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+                axis2.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
-                axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES)
+                axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-YLEFT-":
             if is_in_bounds_l(axis2):
-                axis2.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+                axis2.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis2.move_absolute(0)
+
+        if event == "-YREND-":
+            axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        #####################
         
+        if event == "-ZLEND-":
+            axis3.move_absolute(0, wait_until_idle=False)
+
         if event == "-ZRIGHT-":
             if (is_in_bounds_r(axis3)):
-                axis3.move_relative(DIST, Units.LENGTH_MILLIMETRES)
+                axis3.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
-                axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES)
+                axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-ZLEFT-":
             if is_in_bounds_l(axis3):
-                axis3.move_relative(-DIST, Units.LENGTH_MILLIMETRES)
+                axis3.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis3.move_absolute(0)
+
+        if event == "-ZREND-":
+            axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        ####################
         
         if event == "-HOME-":
-            home_all()
+            connection.home_all(wait_until_idle=False)
+
+        if event == "-OK-":
+            DIST = int(values['-STEP-']) 
+
+        if event == "-STOP-":
+            connection.stop_all()
+
+        #axis1.wait_until_idle()
+        #axis2.wait_until_idle()
+        #axis3.wait_until_idle()
             
+        # note : these only update directly after action when axis is set to idle. However, when set to idle, stop button will not work
         window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTY-"].update("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTZ-"].update("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)))

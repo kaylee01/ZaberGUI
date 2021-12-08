@@ -1,0 +1,4 @@
+def home_all():
+        for device in device_list:
+            print("Homing all axes of device with address {}.".format(device.device_address))
+            device.all_axes.home()
