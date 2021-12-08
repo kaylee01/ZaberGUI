@@ -3,6 +3,10 @@ from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
 from zaber_motion.ascii import Lockstep
 
+''' to do: deal with not integer inputs
+make other ok button go on enter
+do send to specific location'''
+
 Library.enable_device_db_store()
 
 import sys
@@ -68,8 +72,8 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     [   
         sg.Text("Set step size:"),
         sg.InputText(key="-STEP-", size=(5,1)),
-        sg.Text("mm"),
-        sg.Button("OK", key="-OK-"),
+        sg.Text("mm", key="-mm-"),
+        sg.Button("OK", key="-OK-", bind_return_key=True),
         
     ],
     [
@@ -185,6 +189,10 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
         if event == "-OK-":
             DIST = int(values['-STEP-']) 
+            window["-STEP-"].update("")
+            window["-mm-"].update("{} mm".format(DIST))
+
+
 
         if event == "-STOP-":
             connection.stop_all()
