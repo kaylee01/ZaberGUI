@@ -10,5 +10,3 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PySimpl
 pip install PySimpleGUI
 pip3 install --user zaber-motion
 ```
-
-pip3 install --user zaber-motion
