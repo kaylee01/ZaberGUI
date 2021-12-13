@@ -38,21 +38,21 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     axis2 = xy_device.get_axis(2)  # y
     axis3 = z_device.get_axis(1)   # z
     
-    def is_in_bounds_r(axis):
+    def is_in_bounds_r(axis, step):
         ''' checks if next step is in bounds '''
         if axis == axis1:   max = MAX_X
         if axis == axis2:   max = MAX_Y
         if axis == axis3:   max = MAX_Z
         
         current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
-        if current_pos + DIST - max >= 0:
+        if current_pos + step - max >= 0:
             return False
         return True
 
-    def is_in_bounds_l(axis):
+    def is_in_bounds_l(axis, step):
         ''' checks if next step is in bounds '''
         current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
-        if current_pos - DIST >= 0:
+        if current_pos - step >= 0:
             return True
         return False
 
@@ -89,12 +89,10 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             except:
                 sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
 
-            '''else:
-                if values['-INX-'] != "": axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
-                if values['-INY-'] != "": axis2.move_absolute(int(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
-                if values['-INZ-'] != "": axis3.move_absolute(int(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
-            '''
-
+    def centre():
+        axis1.move_absolute(MAX_X/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis2.move_absolute(MAX_Y/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
     layout = [
     [
@@ -121,6 +119,9 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     ],
     [
         sg.Button("Home", key="-HOME-")
+    ],
+    [
+        sg.Button("Centre", key="-CENTRE-")
     ],
     
     [
@@ -151,6 +152,13 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         sg.InputText(key='-INZ-', size=(3,1)),
         sg.Button("OK", key="-OK1-", bind_return_key=True)
     ],
+    [
+        sg.Text("Relative movements (x,y,z):"), 
+        sg.InputText(key='-INXRel-', size=(3,1)), 
+        sg.InputText(key='-INYRel-', size=(3,1)), 
+        sg.InputText(key='-INZRel-', size=(3,1)),
+        sg.Button("OK", key="-OK2-", bind_return_key=True)
+    ],
     ]
 
     window = sg.Window('Zaber GUI', layout, size = (400,400), element_justification='c')
@@ -168,13 +176,13 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             axis1.move_absolute(0, wait_until_idle=False)
 
         if event == "-XRIGHT-":
-            if (is_in_bounds_r(axis1)):
+            if (is_in_bounds_r(axis1, DIST)):
                 axis1.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-XLEFT-":
-            if is_in_bounds_l(axis1):
+            if is_in_bounds_l(axis1, DIST):
                 axis1.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis1.move_absolute(0)
@@ -188,13 +196,13 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             axis2.move_absolute(0, wait_until_idle=False)
             
         if event == "-YRIGHT-":
-            if (is_in_bounds_r(axis2)):
+            if (is_in_bounds_r(axis2, DIST)):
                 axis2.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-YLEFT-":
-            if is_in_bounds_l(axis2):
+            if is_in_bounds_l(axis2, DIST):
                 axis2.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis2.move_absolute(0)
@@ -208,13 +216,13 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             axis3.move_absolute(0, wait_until_idle=False)
 
         if event == "-ZRIGHT-":
-            if (is_in_bounds_r(axis3)):
+            if (is_in_bounds_r(axis3, DIST)):
                 axis3.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
         if event == "-ZLEFT-":
-            if is_in_bounds_l(axis3):
+            if is_in_bounds_l(axis3, DIST):
                 axis3.move_relative(-DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
             else:
                 axis3.move_absolute(0)
@@ -226,6 +234,9 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         
         if event == "-HOME-":
             connection.home_all(wait_until_idle=False)
+        
+        if event == "-CENTRE-":
+            centre()
 
         if event == "-OK-":
             try:
