@@ -192,9 +192,16 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             if (values['-STEP-']) == "":
                 sg.popup("Please enter a valid step size.", title = "Step size error", button_color = ("White", "Red"))
             else:
-                DIST = int(values['-STEP-']) 
-                window["-STEP-"].update("")
-                window["-mm-"].update("{} mm".format(DIST))
+                try:
+                    if float(values['-STEP-']) >= 0:
+                        DIST = float(values['-STEP-'])
+                        window["-mm-"].update("{} mm".format(DIST))
+                    else:
+                        sg.popup("Please enter a valid step size.", title = "Step size error", button_color = ("White", "Red"))
+                except:
+                    sg.popup("Please enter a valid step size.", title = "Step size error", button_color = ("White", "Red"))
+            
+            window["-STEP-"].update("")
 
         if event == "-OK1-":
             '''if int(values['-INX-']) < 0 or values['-INY-'] == "" or values['-INZ-'] == "":
@@ -202,20 +209,20 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             
             if values['-INX-'] != "":
                 try:
-                    if int(values['-INX-']) < 0 or int(values['-INX-']) > MAX_X:
+                    if float(values['-INX-']) < 0 or float(values['-INX-']) > MAX_X:
                         sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
                     else: 
-                        axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                        axis1.move_absolute(float(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
                     
                 except:
                     sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
                 
             if values['-INY-'] != "":
                 try:
-                    if int(values['-INY-']) < 0 or int(values['-INY-']) > MAX_Y:
+                    if float(values['-INY-']) < 0 or float(values['-INY-']) > MAX_Y:
                         sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
                     else: 
-                        axis2.move_absolute(int(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                        axis2.move_absolute(float(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
                 except:
                     sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
@@ -223,10 +230,10 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
             if values['-INZ-'] != "":
                 try:
-                    if int(values['-INZ-']) < 0 or int(values['-INZ-']) > MAX_Z:
+                    if float(values['-INZ-']) < 0 or float(values['-INZ-']) > MAX_Z:
                         sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
                     else: 
-                        axis3.move_absolute(int(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                        axis3.move_absolute(float(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
                 except:
                     sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
