@@ -24,9 +24,6 @@ MAX_Z = 40.000047
 # move distance in mm
 DIST = 15
 
-
-
-
 with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     device_list = connection.detect_devices() 
     xy_device = device_list[0]
@@ -62,8 +59,8 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         if axis == axis2:   max = MAX_Y
         if axis == axis3:   max = MAX_Z
         
-        if (is_in_bounds_r(axis, DIST)):
-            axis.move_relative(DIST, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        if (is_in_bounds_r(axis, step)):
+            axis.move_relative(step, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         else:
             axis.move_absolute(max, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
@@ -110,6 +107,50 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
             except:
                 sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+
+    def move_rel(x,y,z):
+        if x != "":
+            try:
+                if float(x) < 0:
+                    move_left(axis1, abs(float(x)))
+                else:
+                    move_right(axis1, float(x))
+
+            except:
+                sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title="X error", button_color=("White", "Red"))
+
+        if y != "":
+            try:
+                if float(y) < 0:
+                    move_left(axis2, abs(float(y)))
+                else:
+                    move_right(axis2, float(y))
+
+            except:
+                sg.popup_no_wait("Please enter a valid Y postion.\n X: (0 to 151.49) mm", title="Y error", button_color=("White", "Red"))
+ 
+
+        if z != "":
+            try:
+                if float(z) < 0:
+                    move_left(axis3, abs(float(z)))
+                else:
+                    move_right(axis3, float(z))
+
+            except:
+                sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+
+
+    def set_step(step):
+        try:
+            if float(step) >= 0:
+                global DIST 
+                DIST = float(step)
+                window["-mm-"].update("{} mm".format(DIST))
+            else:
+                sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
+        except:
+            sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
 
     def centre():
         axis1.move_absolute(MAX_X/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
@@ -187,9 +228,6 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
     while True:
         event, values = window.read()
-
-        
-        #sg.popup('You entered', text_input)
         
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
@@ -243,15 +281,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             centre()
 
         if event == "-OK-":
-            try:
-                if float(values['-STEP-']) >= 0:
-                    DIST = float(values['-STEP-'])
-                    window["-mm-"].update("{} mm".format(DIST))
-                else:
-                    sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
-            except:
-                sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
-
+            set_step(values['-STEP-'])
             window["-STEP-"].update("")
 
         if event == "-OK1-":
@@ -260,11 +290,12 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             window["-INY-"].update("")
             window["-INZ-"].update("")
 
-
-
         if event == "-STOP-":
             connection.stop_all()
 
+        if event == "-OK2-":
+            move_rel(values["-INXRel-"], values["-INYRel-"], values["-INZRel-"])
+            window["-INXRel-"].update()
         #axis1.wait_until_idle()
         #axis2.wait_until_idle()
         #axis3.wait_until_idle()
