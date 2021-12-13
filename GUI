@@ -1,3 +1,4 @@
+from multiprocessing.connection import wait
 import PySimpleGUI as sg
 from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
@@ -72,7 +73,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     [   
         sg.Text("Set step size:"),
         sg.InputText(key="-STEP-", size=(5,1)),
-        sg.Text("mm", key="-mm-"),
+        sg.Text("{} mm".format(DIST), key="-mm-"),
         sg.Button("OK", key="-OK-", bind_return_key=True),
         
     ],
@@ -85,32 +86,32 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     
     [
         sg.Button("End", key="-XLEND-"), 
-        sg.Button("Left", key="-XLEFT-"), 
+        sg.Button(" Left ", key="-XLEFT-"), 
         sg.Text("X-axis"),
         sg.Button("Right", key="-XRIGHT-"), 
         sg.Button("End", key="-XREND-"), 
     ],
     [
         sg.Button("End", key="-YLEND-"), 
-        sg.Button("Left", key="-YLEFT-"), 
+        sg.Button(" Left ", key="-YLEFT-"), 
         sg.Text("Y-axis"),
         sg.Button("Right", key="-YRIGHT-"),
         sg.Button("End", key="-YREND-"),  
     ],
     [
         sg.Button("End", key="-ZLEND-"), 
-        sg.Button("Left", key="-ZLEFT-"), 
+        sg.Button("Down", key="-ZLEFT-"), 
         sg.Text("Z-axis"),
-        sg.Button("Right", key="-ZRIGHT-"), 
+        sg.Button("  Up  ", key="-ZRIGHT-"), 
         sg.Button("End", key="-ZREND-"),  
     ],
     [
-        sg.Text("Move to specific location (x,y,z):"), 
+        sg.Text("Move to absolute location (x,y,z):"), 
         sg.InputText(key='-INX-', size=(3,1)), 
         sg.InputText(key='-INY-', size=(3,1)), 
         sg.InputText(key='-INZ-', size=(3,1)),
-        sg.Button("OK", key="-OK1-")
-    ]
+        sg.Button("OK", key="-OK1-", bind_return_key=True)
+    ],
     ]
 
     window = sg.Window('Zaber GUI', layout, size = (400,400), element_justification='c')
@@ -188,9 +189,56 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             connection.home_all(wait_until_idle=False)
 
         if event == "-OK-":
-            DIST = int(values['-STEP-']) 
-            window["-STEP-"].update("")
-            window["-mm-"].update("{} mm".format(DIST))
+            if (values['-STEP-']) == "":
+                sg.popup("Please enter a valid step size.", title = "Step size error", button_color = ("White", "Red"))
+            else:
+                DIST = int(values['-STEP-']) 
+                window["-STEP-"].update("")
+                window["-mm-"].update("{} mm".format(DIST))
+
+        if event == "-OK1-":
+            '''if int(values['-INX-']) < 0 or values['-INY-'] == "" or values['-INZ-'] == "":
+                sg.popup("Please enter a valid location.\n X: (0 to 151.49) mm\n Y: (0 to 151.49) mm\n Z: (0 to 40.00) mm", title = "Move location error", button_color = ("White", "Red"))'''
+            
+            if values['-INX-'] != "":
+                try:
+                    if int(values['-INX-']) < 0 or int(values['-INX-']) > MAX_X:
+                        sg.popup("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
+                    else: 
+                        axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                    
+                except:
+                    sg.popup("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
+                
+            if values['-INY-'] != "":
+                try:
+                    if int(values['-INY-']) < 0 or int(values['-INY-']) > MAX_Y:
+                        sg.popup("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                    else: 
+                        axis2.move_absolute(int(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+                except:
+                    sg.popup("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                
+
+            if values['-INZ-'] != "":
+                try:
+                    if int(values['-INZ-']) < 0 or int(values['-INZ-']) > MAX_Z:
+                        sg.popup("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+                    else: 
+                        axis3.move_absolute(int(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+                except:
+                    sg.popup("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+
+            '''else:
+                if values['-INX-'] != "": axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                if values['-INY-'] != "": axis2.move_absolute(int(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+                if values['-INZ-'] != "": axis3.move_absolute(int(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            '''
+            window["-INX-"].update("")
+            window["-INY-"].update("")
+            window["-INZ-"].update("")
 
 
 
