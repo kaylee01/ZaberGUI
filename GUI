@@ -55,25 +55,29 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
     def move_right(axis, step):
 
-        if axis == axis1:   max = MAX_X
-        if axis == axis2:   max = MAX_Y
-        if axis == axis3:   max = MAX_Z
+        if axis == axis1:   max, coord = MAX_X, "x"
+        if axis == axis2:   max, coord = MAX_Y, "y"
+        if axis == axis3:   max, coord = MAX_Z, "z"
         
         if (is_in_bounds_r(axis, step)):
             axis.move_relative(step, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         else:
             axis.move_absolute(max, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            sg.popup_no_wait("You are at max {} position".format(coord), title="max", button_color=("White", "Red"))
+            
 
     def move_left(axis, step):
 
-        if axis == axis1:   max = MAX_X
-        if axis == axis2:   max = MAX_Y
-        if axis == axis3:   max = MAX_Z
+        if axis == axis1:   max, coord = MAX_X, "x"
+        if axis == axis2:   max, coord = MAX_Y, "y"
+        if axis == axis3:   max, coord = MAX_Z, "z"
 
         if is_in_bounds_l(axis, step):
             axis.move_relative(-step, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         else:
             axis.move_absolute(0)
+            sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
+                
 
     def move_to_abs(x, y, z):
         ''' Moves to specified absolute positon. If an input is invalid, it will be ignored and other valid movements will occur '''
@@ -174,8 +178,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         sg.Text("Set step size:"),
         sg.InputText(key="-STEP-", size=(5,1)),
         sg.Text("{} mm".format(DIST), key="-mm-"),
-        sg.Button("OK", key="-OK-", bind_return_key=True),
-        
+        sg.Button("OK", key="-OK-", bind_return_key=True), 
     ],
     [
         sg.Button("STOP pls", key="-STOP-", )
@@ -186,7 +189,6 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     [
         sg.Button("Centre", key="-CENTRE-")
     ],
-    
     [
         sg.Button("End", key="-XLEND-"), 
         sg.Button(" Left ", key="-XLEFT-"), 
@@ -295,7 +297,11 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
         if event == "-OK2-":
             move_rel(values["-INXRel-"], values["-INYRel-"], values["-INZRel-"])
-            window["-INXRel-"].update()
+            #window["-INXRel-"].update("")
+            #window["-INYRel-"].update("")
+            #window["-INZRel-"].update("")
+
+
         #axis1.wait_until_idle()
         #axis2.wait_until_idle()
         #axis3.wait_until_idle()
