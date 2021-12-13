@@ -203,33 +203,33 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             if values['-INX-'] != "":
                 try:
                     if int(values['-INX-']) < 0 or int(values['-INX-']) > MAX_X:
-                        sg.popup("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
+                        sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
                     else: 
                         axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
                     
                 except:
-                    sg.popup("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
+                    sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title = "X error", button_color = ("White", "Red"))
                 
             if values['-INY-'] != "":
                 try:
                     if int(values['-INY-']) < 0 or int(values['-INY-']) > MAX_Y:
-                        sg.popup("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                        sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
                     else: 
                         axis2.move_absolute(int(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
                 except:
-                    sg.popup("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                    sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
                 
 
             if values['-INZ-'] != "":
                 try:
                     if int(values['-INZ-']) < 0 or int(values['-INZ-']) > MAX_Z:
-                        sg.popup("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+                        sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
                     else: 
                         axis3.move_absolute(int(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
                 except:
-                    sg.popup("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+                    sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
 
             '''else:
                 if values['-INX-'] != "": axis1.move_absolute(int(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
