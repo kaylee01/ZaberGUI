@@ -24,6 +24,26 @@ MAX_Z = 40.000047
 # move distance in mm
 DIST = 15
 
+left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAAqv8AgL8chNkiiNUhhNYfhNcghNgghdgfhNggg9ggg9gghNgghNgghNgghNgghNj///90+N/XAAAAEHRSTlMAAwQbHh86j5CipanF3d/06MxMzgAAAAFiS0dEEeK1PboAAABcSURBVFjD7ZZJCoBAEMTc9yX/f60HfzABQa3cE+iBobuqQgjvodvO0fj9AQzSF4Hbn8vn3wHWJn78P/rtAbDUxR9okr4P6BH0I6aQwhcLdrn69e4PDH/ihBAe4QJu2Ax3gaY3zgAAAABJRU5ErkJggg=='
+Left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAPFBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNchg9ghhNghhdgghNkfhNghhdgghNgghNgghNgfhNgghNgghNj///9MJE9iAAAAEnRSTlMACyAhSUpTVFVWV1tc2eT5+/yS4ZH/AAAAAWJLR0QTDLtclgAAAHJJREFUWMPtlUkOwCAMA6ErpQvB/39s75VCQDnWcxsJW8oFh0AIIR3Ma2y6xVFwx4ZbZAGw6N6VL5PqXXlJqlskAVBP1ZlnvsUmACSrbvJ83j+DeX+B+4SwC4B6qc4GNow1eL91/7D4p80/rv55J4T8ixeaxhdxB5W+RQAAAABJRU5ErkJggg=='
+right64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAAqv8chNkhhNYfg9geh9ofhNcghNgghdgfhNgfg9ggg9ggg9gghNggg9gghNgghNj///+0c9rnAAAAEHRSTlMAAxsfISI6j5Cio6XG3+H03k1vTQAAAAFiS0dEEeK1PboAAABaSURBVFjD7ZZLDoAgFMRA8AeCvf9p3bqfREmY7tvkreaFYIwZnf2+kuJvQEtiQCsUtRBPgL664IILr0IFaItaOP4LqCfEAtCzffsz+vK4yvMuPxjyi2OM+ZgH5MEMTUJo/boAAAAASUVORK5CYII='
+Right64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAOVBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNchg9ghhNgghNkfhNghhdgghNgghNgghNgfhNgghNgghNj///9KJSBFAAAAEXRSTlMACyAhSUpTVFVXW1zZ5Pr7/OvXKIEAAAABYktHRBJ7vGwAAAAAcklEQVRYw+2VOwrAMAxD+2/TTxzd/7IdOiXguMVkqt72BgkMIeo6QgjR6Oex6mb+RAwVN5kASNDdZIh5onSbIHmidJtVAKRDdTaw4VvD8wYX1V82XLo3L/CesAmAtKvOPPMtv3X3sLinzT2u7nknhPyWG6qnFh1x6ykSAAAAAElFTkSuQmCC'
+up64 ='iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEUAAAAAqv8AgL8chNkjhNwiiNUhhNYeh9oehtgghNgghdgfhNgfg9ggg9ggg9gghNgghNgghNggg9gghNgghNj////j/00fAAAAFHRSTlMAAwQbHR4fIjuPkKKjpanF3d/h9OWAHaoAAAABYktHRBXl2PmjAAAAlElEQVRYw+2SyQ6AIAwFwX1f+//fqgaNGzRSjr65NjMUglIAAPAX4qqKQ/x0IJpyuZ+NtDJmYb68sO1vkN3CnN+20h3M+V2ka9kOh6+UrHD6ssLVlxTuvn/h6fsW3r5fweb7FOz+94LL/1rY/6+2zbT51Qkb6N3+UejZwMz4e2FmAyVRo93j7R1K/hGKImwOAADg5yylmw+GfHyoKgAAAABJRU5ErkJggg=='
+Up64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAP1BMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNchg9ghhNghhdgghNkfhNghhdgghNgghdgghNgghNgfhNgghNgghNj///80NE/FAAAAE3RSTlMACyAhSUpTVFVWV1tc2eX5+vv8OHqK5gAAAAFiS0dEFJLfyTUAAACbSURBVFjD7ZTbCoAgEAW1e3axbf//XwOL6KKI61N05jGYIWE5SgEAPkEzz02O3xHzOub5OQXjfGYyGT6RuOD+fx1aEr7i8JUSFk5fWLj4osLNFxQefnLh5ScWPH5SwfhPZ//cxf1iCZyeK9giGqiCp+sKVTSgJ16Mfw96y5OOv0HXZWgPylpjD7AH2IOv7sENwR48SN4DAMCv2ADAghiPhcz6cgAAAABJRU5ErkJggg=='
+down64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAASFBMVEUAAAAAqv8AgL8fhdYchNkjhNwiiNUhhNYfg9gehtgghNgghdgfhNgfg9ggg9ggg9gghNgghNgghNgghNggg9gghNgghNj////IKi6QAAAAFnRSTlMAAwQZGx0eHyE7j5Cio6Wpxd3e3+H0b8Dv0gAAAAFiS0dEFwvWmI8AAAChSURBVFjD7ZVJEsIgEADBDZOYRWP6/0/1QJW4MBgmR6evVDcUUOCcYRiGYcg0zbbxFnovD/sLtMXAAgxiwQ/AUgxMFAp+AJiKgTDLhejPx/ImnK4A4y7j9wD3869jkAprfamw3s8Xavxcoc7/LtT6n4V6/72g8V8LOj8VtP7zVsf7GzRPQ1yDdv60Bu38qaD3nQu3bb5z+6472EdhGMbf8AC7bxEd9IMMvAAAAABJRU5ErkJggg=='
+Down64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNkfhNchg9ghhNghhdgghNkfhNghhdgghNgghdgghNgghNgfhNgghNgghNj////GIpG9AAAAFHRSTlMACyAhSUpRU1RVVldbXNnl+fr7/OKBPssAAAABYktHRBXl2PmjAAAAp0lEQVRYw+2UyQ7DIAxEszcJzebM/39rD1WikBoB7qWVZo6g9ySDNUXBMAwTStnWoau6LRP4GZvTr8YVc9zQABDV4ARAExVUW8DgBMBaxWdwohrex0PKK/YCYJ/8w0EA7M+0f1AMWbxiyOQ/DNn8zWDgPYOJvxiM/Gkw88fqSHC1Ew1f8Ichl7/2QS/e/IY+6JblwT5gH7AP/rUP7u9gm1/tA4ZhfjovXZgaD96FIfoAAAAASUVORK5CYII='
+uparrow64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAig9cfhNkfhNchg9ghhNgghNkfhNghhdghgtcgg9cghNgghdgfhNgghNgghdkghNj////GrReWAAAAEHRSTlMATFFTVFVXW1yFhuTl+/z8mxBGIgAAAAFiS0dEEeK1PboAAAC0SURBVFjD7dbRDoMgDIXholO3Acr7P+0GKFKTCS1L9KLn/v+MiU0EkN1+r2V5t/SD++7Z0FsPzGxhDL1zdmzrucKQet5bhH4Oz2cJsZ888OAIaw8eAIaw9RGgC6lfAaqw9xtAE7I+ARQh73egXkB9BtQKuM+BOqG3+NPPgXgctjsF9OF0EBAFXQLQ6WEgCOeAMqaH3wB0xijSTRwB8gQQQAABBBBAgD8DuvQ/UJqi/g/ILtkHVakW4BmoCSUAAAAASUVORK5CYII='
+Uparrow64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAqpJREFUeF7tmb9v00AUx79nZ+FPQKAkBIm4IPEH0AV25kogQOqAOrMh5EpIWDAyVyyo/JI6s5cFdpbWYUidCP4GlsaHDjWS49q+5/TunNYvo/3y7r6fe+9r+06g5T/Rcv1gAFwBLSfALUApgH4UvwWwBeASJX4FYv4C2EnC4JluLtoK6EWHdwTEd12iVbwvIdcn4dqPqrkxAMrKtboFKIDOc4y2Bc6zOMrcGQCF0kWO4Qq4yKtL0dZoBXRfx+tqktMXQWMvWs0A2JN+bzR6LwQeKQAS+DC5MdzEhphRVs1kjHsAe9Lvj0a7EHi4IETiczIcPnENwS2Al/udvn/5EwQ2ilaxiUpwB6Bs5fMkHFeCGwBU8XMYDiHYB6Ap+zJDc9UOdgGUix8DGORMcAqBbvaaCwj2AFSI9zqze+mxP8mKTX3vunec7ruGYAeARvz4+a1pP4plFkASBqL75tfANQTzAAjilfAiAOq6awhmARDFVwFwDcEcgBridQBcQjADoKZ4CgBXEIwA6EXxrgAe557piUB69yi8ueD285gyD8i/F1yLDnoS3jdlGwuPSImPk+0gP2bt76QzAyg5N6gUT62AuZpSCIR9fx0RGwC04usCUPFFECgHH9YBnIhRR2dPAfz0OrMH6jmvG5jaAtk8/yFI7wsEbgN4Rzn60s3jzBWgG6Ds/jIAlh2r6n8MwAZVSk6ugIJvAQo40zHcAqaJUvNxC3ALnN4PoFaPyTj2AJM06+RiD2APYA84tSlap4VMxbIJmiJZNw+bIJsgmyCbYNY31NFYXR8xEd/IoMtsipoQW5SDAdgiq8vLj8Eo/g3gygmoP0kYXNVBs3G/sRYYvDq8n3piR4nyUrk13l77akOgLmdjAHQTc3WfAbgivarjcAWs6sq4mlfrK+AfAL9+UDFlSjgAAAAASUVORK5CYII='
+Downarrow64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAS1BMVEUAAAAAqv8AgL8iiNUhhNYeh9ofhNcehtgig9cghNgfhNgfg9ggg9ggg9gghNggg9gghNgghNggg9gghNgghdgghNgghNgghNj///+4dvnuAAAAF3RSTlMAAwQeHyI6O0yPoqOlqcXG3d/h5OX09pS74+AAAAABYktHRBibaYUeAAAAvklEQVRYw+3W2Q6DIBRFUahURTtZh/3/f9oHa8HEpgxNbJN73s/iQgJBKcnPpx6GOgvooc8CAAQQQAABBNgRsOPVbAPFZbSf+yXQmS3AdEAZBDjBA0xHEKBaX3DA3G8CzkA3APfjGihuAOeDihQWIKa/Ep5AXN8XZiC27wkACX0nAKT0XwJAUn8RlsT3ldIn1z/plJvohLS+20XK/P4MqesvM7Q660mqKvlt/1XsRHAm++Y5D0/5fSB7C5Id8wDzHisbuT9pYwAAAABJRU5ErkJggg=='
+downarrow64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAig9cfhNkfhNchg9ghhNgghNkfhNghhdghgtcgg9cghNgghdgfhNgghNgghdkghNj////GrReWAAAAEHRSTlMATFFTVFVXW1yFhuTl+/z8mxBGIgAAAAFiS0dEEeK1PboAAAC0SURBVFjD7de7EoMgEEBRjAaTwOr9/69NEXzgJCJrEYvd/p6CAQacs7n8NDE2p4AA4RQAYIABBhhggAEG/BNoYmz3gFvpvRBA/G/AS+m9EMiFHPBCCWglFzLACyC3/UXoBBge34C7AENfWsZcWAEH+42wAIf7XJiBij4TJqCqXwsJqOxXwgeo7hcBQNPPAoCqnwQAXZ+ENJo+bX3YHC+NoO0nQd871wH0Z+7E5zi+7ON3/XkDcjIW2MImT4kAAAAASUVORK5CYII='
+home64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAABLFBMVEUAAAAA//8AgP8AgL8zmcwrgNUkktsggN8agMwrgNUnidgkgNseh9IbhtckhtsjgNwfhdYdgNgchNkiiNUgh9cjh9Uig9Yfg9ojhdYhhdgfgtsigtkhhNkfhtcfhNcihNkghtchhdYfhdoghNghhNghhdghhNkghdchhdkghNggg9ghhdgghdghhdggg9cgg9gghNghhNcgg9cghdgghNghhdchhNgghNgfg9ghhNggg9cgg9gghNgghNcghNgghNgghNgfhNchhNgghNghg9gghNgghNkghdghhdgghNgghNgghNgghNgghNgghNggg9gghNgfg9gghNgghNgghNgfhNgghNgghNgghNgfhNgghNgghNgghNgghNgfhNgghNgghNgghNgghNj////KA44JAAAAYnRSTlMAAQIEBQYHCAoMDQ4RExUWGRobHiAkJSksLjE1Njk6PD9FS09VXF1gZGhvdXd9gIiJjY6QkZScnaOkp6mqrrK1uLu8vsTFx8rM0tbY2dre4eLj5Obn6+3u8PP19vj6+/z9/khd6SIAAAABYktHRGNcvi2qAAABeUlEQVRYw+2V11YCMRRFo2JvWLGiYi/YRuyiYu8dBQuw//8jfAAXzEwgyfika/Zb7qxzXmbnRoj/Tqdldf4mH7qHp37v+XASIBn2mo+kASAd8Zaf+qRAZsZLfj4HEI0C5OaN41XLAJlZIaa/ANaqzfI1GwAfE0IIMf4OsBUwyTfsA6TG8qfRN4DDJv18yzHA88DPue8R4KxNN99xAXDbU5x0XwNcdunrB+ftpbPWU9CVcugF4KjZPm08AHgdUefHUgB79c557baelJOfADHJX69a0ZFyLguwJP+4AJBb1NJPjkrKmvWifnLyUm4GdPSTU0lKp35yyktZ0K9X9ZvKSRm6c+snRy7lcBIgoXXhmhIAyUHbMA2wU6d3Wep2AK5ss3L6yamOAbgKTDaOX/AnCoLWrgMraFRwgosTo4KsuyBrVIAE44KJEjwVmJz9Ar/AL/hfBc4FslqCasFIV5gKoViiKmxLVrbGVdjWvOshid88OLiJV3po/jTfY5lgbQUAo8kAAAAASUVORK5CYII='
+centre64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAABSlBMVEUAAAAA//8AgP8Aqv8AgL8zmcwrgNUggNUfhdYeh9odg9sjh9Uig9Yihtcghtkfg9oehtsegtUigtchgtkghdofgtsfhNcehtgihNkhhtkhhNoghtcig9ohhdYghdcgg9gfhdkghNgfhNkfg9chg9ghhNgghNkghdkghNcfhdcfhNghhdgfg9khhNcghNggg9khhdgghNkgg9cgg9gghNgfg9gfhNgghNgghdgghNgghdgghNkfhNcfhNghhNgghNgghNkfhNggg9cghNggg9gfhdgghdkghNcghdgghNgghdghhNcghNgghNgghNgfhNgghNggg9gghNkghdcghNgghNgghNgghNgfhNkghNgghNgghdgghNgghNgghNkghNgghNgghNgghNgghNgghNgfhNgghNgghNgghNgfhNgghNgghNgghNj///9Gky58AAAAbHRSTlMAAQIDBAUGGBkiIyQlJigpKistLzAxOjs8PT4/REVHSElPUVJUVVdYWVpbXGtsbnF9foCIiYqLj5CRmJmam5ydn6KnqKmrra6vsLG0tba3w8XGx8jP0NHS29zd5ebn6O3u7/Dx8vP2+Pn7/P1/wT9DAAAAAWJLR0RtuwYArQAAAnlJREFUWMPtl91bUkEQxhdFBBElLU0tv0WQwtQI6EMQkKJIsQTFjyQwQPj9/9ddnNQDnl0OnQufepy7mT3ve3ZmZ2dmhfjfxRmNOi0R5CFviaAFLUsEAA8EVggeBTYBNv3evwDbZuI/uJHz7WlbT/A+/xEdUlztgeLJdwzkYNzs7tcbGqKa2wJ4natqeiNkahMDOwBcJZ/3X5+CfTbVBCBhN4H/DMCuq/0Y3RkAsl0ZbDsAFwt382DpJ0CimxfrAMcuo0RylwBCavzjBnA8aJyJgyWgoTyLvm/AhevWUIParTZUBvIqJ/wACzpDBCI6dRHAp4jgEbDbZpqcbFMzQFG+hRngyqXy0d0EpqTLcSCpjnIaeC/14Bx4piaYA85ki16g0q+3OIKxWNCht9gvgVEJQQD4ojeMFAEKHr1tD1iVEGwCW/r/F7VbWNDvIQxsdPavfKvj6tciQggRvFYDQggRqXV81Mpfd72oQfWYEELEgGQKiAohJgw+ipogSKVNEMhcWDPrgjSIBe3LwwGd8Y1BEPVXKac3eAoAh8Nmj9ELVNtqlmMtFvUPtFW8S2BElcqz6lSeB06lq9tAqvtleiddnQaabhXeo77OtiKQURWULFBQ1DQfwJK8pC0DrKiKah4ou2VFdbgC7Cs7w3gdKEnKuvMEqI+poxwCKA0ZEQyfALzo1toSAOXFuwTLFYB41+ZqzwLw0d1O4NHMn0y0Z3sCgGZqzn7T3ufTWnuPm8ALYQv9GTAuv4YBwnu/NL3+0uyIM35gNOLsj/Uwo/mKnfDCSm9zmm3qw9kt+vTt097gmoyubgC88o08TOv3SmD50WX52Wf54fkvyG+va0SRS+VzUwAAAABJRU5ErkJggg=='
+stop64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAHlBMVEUAAAAAgP8hhNgghNggg9khhNcghNgghNgghNj///8bgLFtAAAACHRSTlMAAlVwcY2oqu9aCT4AAAABYktHRAnx2aXsAAAAT0lEQVRIx2NgGAV0BYxu5RggRQBJAXMHFmCApIANm4IEJAXs2BQUoChoVUIDEWgKmtDdrTGqYFTBqIJRBUQWIASKIIKFGMFikGBBOgroAAA3+qM7sLvmjAAAAABJRU5ErkJggg=='
+tick64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAByFBMVEUAAAAA//8AgP8Aqv8AgL8zmcwkktsggN8cjuMXi9EnidgkgNsiiN0ggN8jgNwggNUfhdYdgNgchNkiiNUhhNYgh9cfg9geh9odg9sjh9UhhdghgtkghdofhdYihNgggtoghNYfhtcfhNcehtgihNkhhtkhhNoghtcgg9cfhdghhdYhg9cghdcgg9gfhdkfg9khg9gghNkfhdcfhNghhdghhNkhhdkghNcghdcgg9gfhdghhdcgg9cgg9gfhNkfg9khhNchg9cghNggg9gghNggg9kghNgghNkfhdgghdkgg9cfhNghg9ggg9gghNgfhNgghNgghdgghdgghNkfhNcfhNghhNgghNgghNkgg9cfhNgfg9ghhNggg9gghNkgg9cghNggg9gfhdgghdkghdgghNgghdgghNgfhNkhhNcghNgghNgghNgghNggg9gghNcgg9gfhNghg9gghNggg9gghdcghNgfhNgghNgghNcghNgghNgghNgfhNgghNgghNgfhNkghNgghNgghNgghNgfhdgghNgghdgghNgghNgghNgghNgghNgfhNgghNgghNgghNgghNgghNgfhNgghNgghNgghNj///+zTMzgAAAAlnRSTlMAAQIDBAUHCAkLDQ4PEBYYGRobHh8gISIjJC4vMDI0Nzg5Ojs8PT4/QEFFRkdISUpUV1pbXF1eX2BhYmZnaWprbG1ub3Bxdnh7f4CDhIiJi4+WmJmam5yeoKGio6Slpqeoqautr7CxsrO0tba+v8DBwsPExcbIycvNztDR0tPZ2tvc3d7f4+Tl5u/w8fLz9PX29/r7/P4SVPWEAAAAAWJLR0SX5m4brwAAA0lJREFUWMPdl9dDE0EQxjcSlKagJAJWVMAIRqoKYgFBAQsqKCJyUgJSVLoiViAoRSAB5Pf3+nApV7K5u1fnaXdmv7nd2ZnvZoX4n+W4v6m9U1E625v8xx2DD9cpa2hkTanLcgC/1L+DSXb6fTbh5XNIZNZvA54/Hl2+OdHZUl9VVd/yfHIzqhu1jEZjWF252Fbojmvd5x4sqfrwnaTwrAAA+yPFLqPJVTK6D8Bgphx/9BsA708kNp+aAOBrjgxfsAKwXu2SLXBd3QAI5ic2H1sB+ORNdsa8eYBgwj0c/g4QOJg8yGnDAF8SxMEVAHiZYnVNKd0AA2bDXYBAinWipAwD3DLlzw7w6ZCdTE2bB0LGUI0B6zaLLn8DGDbkP0CN3WK7DlCmU80AUy67DlwfgDmtxgfsn7Rf76f3gRKNYgB464RwxoE3mhzaAYotUbmz208jw4tAOJ5NdcCiZQQ8K8D5SBSCwLWYSQHabOGjDsRDoCdmWwXO2sK/jk6LgNUYfwObbovzLwMMxFalbgG5kckVYNIZXohpTS41A50O8aILaIyMnwD3HeJFC9AeGXcANx3ixS3gWWTcC1Q7xIsazZ3oHaSX66vaEwRQjFSjdaA7QvoPdiut8boj6IJ4BdirNODfmKlOG8Qm7TV6d7UepHjRBTRExn5dIlXuxT3I8bpE8upTuWIP+Fsjjb85lcUqUChMHpLg9cUkFOCBxqqeolm+fyEeAa9is1pgSUsoFXvRjiLx91VCibN4VtjAkeoe5N8XPiCUEZ/3A6PC7EGGF++AXiOtnzJ5kOLPYGThGWBaT6u+7nsHZD+WCWBWp/KjY1kLqQMo1etGgfU8e/iCDWDI2LuEgXl7v/cFYNtjVDcAjLhtNBgBEjPYIEC3ZYvi7gHoS2DJ/AowZHGKtBGAhYxEtiM/AT4XJMN7PwIsZ0talyDARq280bzxB2BZels5XwCYOi3JvxkAFrLlO8wcUJvtsYvmZtv3Tq2vvoykQbodUpctP7yQquGfokcrqj500+qavCNRKtiaetFaX1Vd39o1vRXVDXtsZNrladmTZ6rUZrGUKGEzOqQUC/uSebXntxb961VNhuO3o6es8XFHb2/H48ay3P/6hf0PrgDmLxzMGhUAAAAASUVORK5CYII='
+tick164 ='iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNkfhNchg9ghhNghhdgghNkfhNghhdgghNgghdgghNgghNgfhNgghNgghNj////GIpG9AAAAFHRSTlMACyAhSUpRU1RVVldbXNnl+fr7/OKBPssAAAABYktHRBXl2PmjAAAAoElEQVRYw+2WSRKDMAwExRYgJmzR/9+ahaUSwGA0l6Rq5qzugz1yWYRhGAZIkkUQf221RgyuV9UU5NsY4/vSzJcv/l6RJ/+7fJQl+/13B3ytnQN4Sb1DYbzEnWcskPcOBvMixfuob8D9bRhO3v/KcLo/C4Ohf18GU38/DMb+zwbz/owGYP+G6oT3x2MA+Mlg54dzAN6fZy5Nk/MjxTD/lQdsFhRovEUwRAAAAABJRU5ErkJggg=='
+axis64 = 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAABU1BMVEUAAAAA//8Aqv8AgL8rgNUkktscjuMagMwzgMwkktsggN8khtsjgNwfhdYchNkkgNsjjdwng9geh9odg9skitMjh9UjhdYfhdsihNgfhtchhtkfhdgig9ohg9cfhdohhNcghNgfh9whhdghhdkghNcfg9gfhtghg9khhdcgg9cfhdYghNggg9kfhdchhNchhNoghdgfhtkhhNgghNkhgtghhNgfg9gfhNghg9kghNohhNghhNoghdgggtgfhNgfhNgghNchhdgghNghhNgfhdgfhNcgg9cgg9gghNgghNghg9cghNgghNkfhNghhNgfhdchg9gfhNgghNgghNkghNkghNgghNgghNgghdgghNghhdkhg9gghNcghdkhhNghhNgghNgghdgghNgghNkghNghg9kghNgghNgghNcfhNgfhNkghNgghNcghNgghdgghNj///8PhQorAAAAb3RSTlMAAQMEBgcJCgoOEBUWGRscHSEiIyMkLDI0OT1BREZLTU9RVl5fY2NlZmdrcHFzdHR3enx+g4OKi4yPkZGWl5ykpqmqqqusra+4ubm/wcPJzMzN0NDU1tjc4eLi4+bo6evs7O/v8PP29/j7/f3+/v7kcviWAAAAAWJLR0Rw2ABsdAAAAQRJREFUSMdjYKAikNZkYmCQVSZeg3CYJQO/QyBRahktzBkZGEzjBUwTRYjSYJyfb8TAwOYd7GNHlHr57Jy8bDkGBsXoWFZi1Ium5Ofm5icJMzB7OhNlgW6+U36+S74OA7OHI1Ea2BXY8vPZFNiJ1gAE+fkgkinInjQNJABUDUIaXAwMSpLEaxCL02fQipIiwUnuXuKRVqT4gTPBP4CPJE/bZpiQFkohqTYspGgwDNeOUCNBA0eMGYOfKy/xGtxCuRkEk61J8QOPHjdpnjbIj5QgSQO3b366CoyjmplPBMjKz9eAalAnVQPJTqKJp0kOVlpn0VENoxroqCEtjUQNMjIMQwYAAIAPYGJ54gHnAAAAAElFTkSuQmCC'
+
+
 with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
     device_list = connection.detect_devices() 
     xy_device = device_list[0]
@@ -161,72 +181,100 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         axis2.move_absolute(MAX_Y/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
-    layout = [
-    [
-        sg.Text("X position:"),
-        sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-")
-    ],
-    [
-        sg.Text("Y position:"),
-        sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-")
-    ],
-    [
-        sg.Text("Z position:"),
-        sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
-    ],
-    [   
-        sg.Text("Set step size:"),
-        sg.InputText(key="-STEP-", size=(5,1)),
-        sg.Text("{} mm".format(DIST), key="-mm-"),
-        sg.Button("OK", key="-OK-", bind_return_key=True), 
-    ],
-    [
-        sg.Button("STOP pls", key="-STOP-", )
-    ],
-    [
-        sg.Button("Home", key="-HOME-")
-    ],
-    [
-        sg.Button("Centre", key="-CENTRE-")
-    ],
-    [
-        sg.Button("End", key="-XLEND-"), 
-        sg.Button(" Left ", key="-XLEFT-"), 
-        sg.Text("X-axis"),
-        sg.Button("Right", key="-XRIGHT-"), 
-        sg.Button("End", key="-XREND-"), 
-    ],
-    [
-        sg.Button("End", key="-YLEND-"), 
-        sg.Button(" Left ", key="-YLEFT-"), 
-        sg.Text("Y-axis"),
-        sg.Button("Right", key="-YRIGHT-"),
-        sg.Button("End", key="-YREND-"),  
-    ],
-    [
-        sg.Button("End", key="-ZLEND-"), 
-        sg.Button("Down", key="-ZLEFT-"), 
-        sg.Text("Z-axis"),
-        sg.Button("  Up  ", key="-ZRIGHT-"), 
-        sg.Button("End", key="-ZREND-"),  
-    ],
-    [
-        sg.Text("Move to absolute location (x,y,z):"), 
-        sg.InputText(key='-INX-', size=(3,1)), 
-        sg.InputText(key='-INY-', size=(3,1)), 
-        sg.InputText(key='-INZ-', size=(3,1)),
-        sg.Button("OK", key="-OK1-", bind_return_key=True)
-    ],
-    [
-        sg.Text("Relative movements (x,y,z):"), 
-        sg.InputText(key='-INXRel-', size=(3,1)), 
-        sg.InputText(key='-INYRel-', size=(3,1)), 
-        sg.InputText(key='-INZRel-', size=(3,1)),
-        sg.Button("OK", key="-OK2-", bind_return_key=True)
-    ],
+    col2 = [
+        [sg.Button('', image_data=Uparrow64,button_color=('white', 'white'), pad=(0,0), key='-ZREND-')],
+        [sg.Button('', image_data=uparrow64,button_color=('white', 'white'), pad=(0,0), key='-ZRIGHT-')],
+        [sg.Text('Z', font = 'Any 16')],
+        [sg.Button('', image_data=downarrow64,button_color=('white', 'white'), pad=(0,0), key='-ZLEFT-')],
+        [sg.Button('', image_data=Downarrow64,button_color=('white', 'white'), pad=(0,0), key='-ZLEND-')],
     ]
 
-    window = sg.Window('Zaber GUI', layout, size = (400,400), element_justification='c')
+    col_buffer = [
+        [sg.Text('', size=(10,20))],
+    ]
+
+    col1 = [
+        #[sg.Text('Column1', background_color='red', size=(20,20))],
+        [
+            sg.Button('', image_data=Up64,button_color=('white', 'white'), pad=(0,0), key='-YREND-'),
+        ],
+        [
+            sg.Button('', image_data=up64,button_color=('white', 'white'), pad=(0,0), key='-YRIGHT-'),
+        ],
+        [
+            #sg.Button("End", key="-XLEND-"), 
+            sg.Button('', image_data=Left64,button_color=('white', 'white'), pad=(0,0), key='-XLEND-'),
+            #sg.Button(" Left ", key="-XLEFT-"), 
+            sg.Button('', image_data=left64,button_color=('white', 'white'), pad=(0,0), key='-XLEFT-'),
+            #sg.Text("            ", font='Any 16'),
+            sg.Button('', image_data=axis64, button_color=('white', 'white'), pad=(0,0), size=(1,1)),
+            #sg.Button("Right", key="-XRIGHT-"),
+            sg.Button('', image_data=right64,button_color=('white', 'white'), pad=(0,0), key='-XRIGHT-'), 
+            #sg.Button("End", key="-XREND-"),
+            sg.Button('', image_data=Right64,button_color=('white', 'white'), pad=(0,0), key='-XREND-'), 
+            #sg.Column(col_layout)
+        ],
+        [
+            
+            #sg.Button("Right", key="-YRIGHT-"),
+            sg.Button('', image_data=down64,button_color=('white', 'white'), pad=(0,0), key='-YLEFT-'),
+            #sg.Button("End", key="-YREND-"),  
+        ],
+        [
+            sg.Button('', image_data=Down64,button_color=('white', 'white'), pad=(0,0), key='-YLEND-'), 
+        ],
+    ]
+        
+        
+        
+    layout = [
+        [
+            #sg.Button("STOP pls", key="-STOP-", )
+            sg.Button('', image_data=stop64,button_color=('white', 'white'), pad=(0,0), key='-STOP-'),
+            sg.Button('', image_data=home64,button_color=('white', 'white'), pad=(0,0), key='-HOME-'),
+            sg.Button('', image_data=centre64,button_color=('white', 'white'), pad=(0,0), key='-CENTRE-'),
+        ],
+
+        [sg.HorizontalSeparator(color='#2084d8')],
+
+
+        [
+            sg.Text("X position:"),
+            sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-")
+        ],
+        [
+            sg.Text("Y position:"),
+            sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-")
+        ],
+        [
+            sg.Text("Z position:"),
+            sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
+        ],
+        [   
+            sg.Text("Set step size:", font='Any 16'),
+            sg.InputText(key="-STEP-", size=(5,1)),
+            sg.Text("{} mm".format(DIST), key="-mm-", font='Any 16'),
+            #sg.Button("OK", key="-OK-", bind_return_key=True), 
+            sg.Button('', image_data=tick164,button_color=('white', 'white'), pad=(0,0), key='-OK-'),
+        ],
+        [sg.Column(col1, element_justification='c' ), sg.Column(col_buffer), sg.Column(col2, element_justification='c' )],
+        [
+            sg.Text("Relative movements (x,y,z):"), 
+            sg.InputText(key='-INXRel-', size=(3,1)), 
+            sg.InputText(key='-INYRel-', size=(3,1)), 
+            sg.InputText(key='-INZRel-', size=(3,1)),
+            sg.Button("OK", key="-OK2-", bind_return_key=True)
+        ],
+        [
+            sg.Text("Move to absolute position (x,y,z):"), 
+            sg.InputText(key='-INX-', size=(3,1)), 
+            sg.InputText(key='-INY-', size=(3,1)), 
+            sg.InputText(key='-INZ-', size=(3,1)),
+            sg.Button("OK", key="-OK1-", bind_return_key=True)
+        ],
+    ]
+
+    window = sg.Window('Zaber GUI', layout, size = (700,700), element_justification='c')
 
     while True:
         event, values = window.read()
