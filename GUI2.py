@@ -1,8 +1,10 @@
 from multiprocessing.connection import wait
+from shutil import move
 import PySimpleGUI as sg
 from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
 from zaber_motion.ascii import Lockstep
+import time
 
 ''' to do: deal with not integer inputs
 make other ok button go on enter
@@ -98,7 +100,29 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             axis.move_absolute(0)
             sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
                 
+    def move_small_end(axis):
+        if axis == axis1:   coord = "x"
+        if axis == axis2:   coord = "y"
+        if axis == axis3:   coord = "z"
 
+        if axis.get_position(Units.LENGTH_MILLIMETRES) != 0:
+            axis.move_absolute(0, wait_until_idle=False)
+        else:
+            sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
+
+    def move_big_end(axis):
+        if axis == axis1:   max, coord = MAX_X, "x"
+        if axis == axis2:   max, coord = MAX_Y, "y"
+        if axis == axis3:   max, coord = MAX_Z, "z"
+
+        if axis.get_position(Units.LENGTH_MILLIMETRES) != max:
+            axis.move_absolute(max, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        else:
+            sg.popup_no_wait("You are at max {} position".format(coord), title="max", button_color=("White", "Red"))
+
+
+        axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+    
     def move_to_abs(x, y, z):
         ''' Moves to specified absolute positon. If an input is invalid, it will be ignored and other valid movements will occur '''
         if x != "":
@@ -237,18 +261,17 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
 
         [sg.HorizontalSeparator(color='#2084d8')],
 
-
         [
-            sg.Text("X position:"),
-            sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-")
+            sg.Text("X position:", font = 'Any 16'),
+            sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-", font = 'Any 16')
+        ], 
+        [
+            sg.Text("Y position:", font = 'Any 16'),
+            sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-", font = 'Any 16')
         ],
         [
-            sg.Text("Y position:"),
-            sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-")
-        ],
-        [
-            sg.Text("Z position:"),
-            sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
+            sg.Text("Z position:", font = 'Any 16'),
+            sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-", font = 'Any 16')
         ],
         [   
             sg.Text("Set step size:", font='Any 16'),
@@ -283,7 +306,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             break
 
         if event == "-XLEND-":
-            axis1.move_absolute(0, wait_until_idle=False)
+            move_small_end(axis1)
 
         if event == "-XRIGHT-":
             move_right(axis1, DIST)
@@ -292,12 +315,12 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             move_left(axis1, DIST)
 
         if event == "-XREND-":
-            axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            move_big_end(axis1)
 
         #####################
 
         if event == "-YLEND-":
-            axis2.move_absolute(0, wait_until_idle=False)
+            move_small_end(axis2)
             
         if event == "-YRIGHT-":
             move_right(axis2, DIST)
@@ -306,12 +329,12 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             move_left(axis2, DIST)
 
         if event == "-YREND-":
-            axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            move_big_end(axis2)
 
         #####################
         
         if event == "-ZLEND-":
-            axis3.move_absolute(0, wait_until_idle=False)
+            move_small_end(axis3)
 
         if event == "-ZRIGHT-":
             move_right(axis3, DIST)
@@ -320,7 +343,8 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
             move_left(axis3, DIST)
 
         if event == "-ZREND-":
-            axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            move_big_end(axis3)
+
 
         ####################
         
@@ -355,6 +379,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         #axis3.wait_until_idle()
             
         # note : these only update directly after action when axis is set to idle. However, when set to idle, stop button will not work
+   
         window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTY-"].update("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)))
         window["-CURRENTZ-"].update("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)))
