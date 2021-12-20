@@ -1,0 +1,312 @@
+from multiprocessing.connection import wait
+import PySimpleGUI as sg
+from zaber_motion import Library, Units
+from zaber_motion.ascii import Connection
+from zaber_motion.ascii import Lockstep
+
+''' to do: deal with not integer inputs
+make other ok button go on enter
+do send to specific location'''
+
+Library.enable_device_db_store()
+
+import sys
+import glob
+import serial
+
+sg.theme('Reddit')
+
+# max postions in mm
+MAX_X = 151.49909375
+MAX_Y = 151.49909375
+MAX_Z = 40.000047
+
+# move distance in mm
+DIST = 15
+
+with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
+    device_list = connection.detect_devices() 
+    xy_device = device_list[0]
+    z_device = device_list[1]
+
+    
+
+    axis1 = xy_device.get_axis(1)  # x
+    axis2 = xy_device.get_axis(2)  # y
+    axis3 = z_device.get_axis(1)   # z
+    
+    def is_in_bounds_r(axis, step):
+        ''' checks if next step is in bounds '''
+        if axis == axis1:   max = MAX_X
+        if axis == axis2:   max = MAX_Y
+        if axis == axis3:   max = MAX_Z
+        
+        current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
+        if current_pos + step - max >= 0:
+            return False
+        return True
+
+    def is_in_bounds_l(axis, step):
+        ''' checks if next step is in bounds '''
+        current_pos = axis.get_position(Units.LENGTH_MILLIMETRES)
+        if current_pos - step >= 0:
+            return True
+        return False
+
+    def move_right(axis, step):
+
+        if axis == axis1:   max, coord = MAX_X, "x"
+        if axis == axis2:   max, coord = MAX_Y, "y"
+        if axis == axis3:   max, coord = MAX_Z, "z"
+        
+        if (is_in_bounds_r(axis, step)):
+            axis.move_relative(step, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        else:
+            axis.move_absolute(max, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+            sg.popup_no_wait("You are at max {} position".format(coord), title="max", button_color=("White", "Red"))
+            
+
+    def move_left(axis, step):
+
+        if axis == axis1:   max, coord = MAX_X, "x"
+        if axis == axis2:   max, coord = MAX_Y, "y"
+        if axis == axis3:   max, coord = MAX_Z, "z"
+
+        if is_in_bounds_l(axis, step):
+            axis.move_relative(-step, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        else:
+            axis.move_absolute(0)
+            sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
+                
+
+    def move_to_abs(x, y, z):
+        ''' Moves to specified absolute positon. If an input is invalid, it will be ignored and other valid movements will occur '''
+        if x != "":
+            try:
+                if float(x) < 0 or float(x) > MAX_X:
+                    sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title="X error", button_color=("White", "Red"))
+                else:
+                    axis1.move_absolute(float(values["-INX-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+            except:
+                sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title="X error", button_color=("White", "Red"))
+
+        if y != "":
+            try:
+                if float(y) < 0 or float(y) > MAX_Y:
+                    sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                else: 
+                    axis2.move_absolute(float(values["-INY-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+            except:
+                sg.popup_no_wait("Please enter a valid Y postion.\n Y: (0 to 151.49) mm", title = "Y error", button_color = ("White", "Red"))
+                
+
+        if z != "":
+            try:
+                if float(z) < 0 or float(z) > MAX_Z:
+                    sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+                else: 
+                    axis3.move_absolute(float(values["-INZ-"]), Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+            except:
+                sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+
+    def move_rel(x,y,z):
+        if x != "":
+            try:
+                if float(x) < 0:
+                    move_left(axis1, abs(float(x)))
+                else:
+                    move_right(axis1, float(x))
+
+            except:
+                sg.popup_no_wait("Please enter a valid X postion.\n X: (0 to 151.49) mm", title="X error", button_color=("White", "Red"))
+
+        if y != "":
+            try:
+                if float(y) < 0:
+                    move_left(axis2, abs(float(y)))
+                else:
+                    move_right(axis2, float(y))
+
+            except:
+                sg.popup_no_wait("Please enter a valid Y postion.\n X: (0 to 151.49) mm", title="Y error", button_color=("White", "Red"))
+ 
+
+        if z != "":
+            try:
+                if float(z) < 0:
+                    move_left(axis3, abs(float(z)))
+                else:
+                    move_right(axis3, float(z))
+
+            except:
+                sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
+
+
+    def set_step(step):
+        try:
+            if float(step) >= 0:
+                global DIST 
+                DIST = float(step)
+                window["-mm-"].update("{} mm".format(DIST))
+            else:
+                sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
+        except:
+            sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
+
+    def centre():
+        axis1.move_absolute(MAX_X/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis2.move_absolute(MAX_Y/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+        axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+    layout = [
+    [
+        sg.Text("X position:"),
+        sg.Text("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTX-")
+    ],
+    [
+        sg.Text("Y position:"),
+        sg.Text("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTY-")
+    ],
+    [
+        sg.Text("Z position:"),
+        sg.Text("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)),key="-CURRENTZ-")
+    ],
+    [   
+        sg.Text("Set step size:"),
+        sg.InputText(key="-STEP-", size=(5,1)),
+        sg.Text("{} mm".format(DIST), key="-mm-"),
+        sg.Button("OK", key="-OK-", bind_return_key=True), 
+    ],
+    [
+        sg.Button("STOP pls", key="-STOP-", )
+    ],
+    [
+        sg.Button("Home", key="-HOME-")
+    ],
+    [
+        sg.Button("Centre", key="-CENTRE-")
+    ],
+    [
+        sg.Button("End", key="-XLEND-"), 
+        sg.Button(" Left ", key="-XLEFT-"), 
+        sg.Text("X-axis"),
+        sg.Button("Right", key="-XRIGHT-"), 
+        sg.Button("End", key="-XREND-"), 
+    ],
+    [
+        sg.Button("End", key="-YLEND-"), 
+        sg.Button(" Left ", key="-YLEFT-"), 
+        sg.Text("Y-axis"),
+        sg.Button("Right", key="-YRIGHT-"),
+        sg.Button("End", key="-YREND-"),  
+    ],
+    [
+        sg.Button("End", key="-ZLEND-"), 
+        sg.Button("Down", key="-ZLEFT-"), 
+        sg.Text("Z-axis"),
+        sg.Button("  Up  ", key="-ZRIGHT-"), 
+        sg.Button("End", key="-ZREND-"),  
+    ],
+    [
+        sg.Text("Move to absolute location (x,y,z):"), 
+        sg.InputText(key='-INX-', size=(3,1)), 
+        sg.InputText(key='-INY-', size=(3,1)), 
+        sg.InputText(key='-INZ-', size=(3,1)),
+        sg.Button("OK", key="-OK1-", bind_return_key=True)
+    ],
+    [
+        sg.Text("Relative movements (x,y,z):"), 
+        sg.InputText(key='-INXRel-', size=(3,1)), 
+        sg.InputText(key='-INYRel-', size=(3,1)), 
+        sg.InputText(key='-INZRel-', size=(3,1)),
+        sg.Button("OK", key="-OK2-", bind_return_key=True)
+    ],
+    ]
+
+    window = sg.Window('Zaber GUI', layout, size = (400,400), element_justification='c')
+
+    while True:
+        event, values = window.read()
+        
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+
+        if event == "-XLEND-":
+            axis1.move_absolute(0, wait_until_idle=False)
+
+        if event == "-XRIGHT-":
+            move_right(axis1, DIST)
+
+        if event == "-XLEFT-":
+            move_left(axis1, DIST)
+
+        if event == "-XREND-":
+            axis1.move_absolute(MAX_X, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        #####################
+
+        if event == "-YLEND-":
+            axis2.move_absolute(0, wait_until_idle=False)
+            
+        if event == "-YRIGHT-":
+            move_right(axis2, DIST)
+
+        if event == "-YLEFT-":
+            move_left(axis2, DIST)
+
+        if event == "-YREND-":
+            axis2.move_absolute(MAX_Y, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        #####################
+        
+        if event == "-ZLEND-":
+            axis3.move_absolute(0, wait_until_idle=False)
+
+        if event == "-ZRIGHT-":
+            move_right(axis3, DIST)
+
+        if event == "-ZLEFT-":
+            move_left(axis3, DIST)
+
+        if event == "-ZREND-":
+            axis3.move_absolute(MAX_Z, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
+
+        ####################
+        
+        if event == "-HOME-":
+            connection.home_all(wait_until_idle=False)
+        
+        if event == "-CENTRE-":
+            centre()
+
+        if event == "-OK-":
+            set_step(values['-STEP-'])
+            window["-STEP-"].update("")
+
+        if event == "-OK1-":
+            move_to_abs(values['-INX-'], values['-INY-'], values['-INZ-'])
+            window["-INX-"].update("")
+            window["-INY-"].update("")
+            window["-INZ-"].update("")
+
+        if event == "-STOP-":
+            connection.stop_all()
+
+        if event == "-OK2-":
+            move_rel(values["-INXRel-"], values["-INYRel-"], values["-INZRel-"])
+            #window["-INXRel-"].update("")
+            #window["-INYRel-"].update("")
+            #window["-INZRel-"].update("")
+
+
+        #axis1.wait_until_idle()
+        #axis2.wait_until_idle()
+        #axis3.wait_until_idle()
+            
+        # note : these only update directly after action when axis is set to idle. However, when set to idle, stop button will not work
+        window["-CURRENTX-"].update("{:.2f} mm".format(axis1.get_position(Units.LENGTH_MILLIMETRES)))
+        window["-CURRENTY-"].update("{:.2f} mm".format(axis2.get_position(Units.LENGTH_MILLIMETRES)))
+        window["-CURRENTZ-"].update("{:.2f} mm".format(axis3.get_position(Units.LENGTH_MILLIMETRES)))
