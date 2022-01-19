@@ -1,4 +1,4 @@
-from multiprocessing.connection import wait
+#from multiprocessing.connection import wait
 from shutil import move
 import PySimpleGUI as sg
 from zaber_motion import Library, Units
@@ -46,7 +46,8 @@ tick164 ='iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEUAAAAXi9Egh9cfg9
 axis64 = 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAABU1BMVEUAAAAA//8Aqv8AgL8rgNUkktscjuMagMwzgMwkktsggN8khtsjgNwfhdYchNkkgNsjjdwng9geh9odg9skitMjh9UjhdYfhdsihNgfhtchhtkfhdgig9ohg9cfhdohhNcghNgfh9whhdghhdkghNcfg9gfhtghg9khhdcgg9cfhdYghNggg9kfhdchhNchhNoghdgfhtkhhNgghNkhgtghhNgfg9gfhNghg9kghNohhNghhNoghdgggtgfhNgfhNgghNchhdgghNghhNgfhdgfhNcgg9cgg9gghNgghNghg9cghNgghNkfhNghhNgfhdchg9gfhNgghNgghNkghNkghNgghNgghNgghdgghNghhdkhg9gghNcghdkhhNghhNgghNgghdgghNgghNkghNghg9kghNgghNgghNcfhNgfhNkghNgghNcghNgghdgghNj///8PhQorAAAAb3RSTlMAAQMEBgcJCgoOEBUWGRscHSEiIyMkLDI0OT1BREZLTU9RVl5fY2NlZmdrcHFzdHR3enx+g4OKi4yPkZGWl5ykpqmqqqusra+4ubm/wcPJzMzN0NDU1tjc4eLi4+bo6evs7O/v8PP29/j7/f3+/v7kcviWAAAAAWJLR0Rw2ABsdAAAAQRJREFUSMdjYKAikNZkYmCQVSZeg3CYJQO/QyBRahktzBkZGEzjBUwTRYjSYJyfb8TAwOYd7GNHlHr57Jy8bDkGBsXoWFZi1Ium5Ofm5icJMzB7OhNlgW6+U36+S74OA7OHI1Ea2BXY8vPZFNiJ1gAE+fkgkinInjQNJABUDUIaXAwMSpLEaxCL02fQipIiwUnuXuKRVqT4gTPBP4CPJE/bZpiQFkohqTYspGgwDNeOUCNBA0eMGYOfKy/xGtxCuRkEk61J8QOPHjdpnjbIj5QgSQO3b366CoyjmplPBMjKz9eAalAnVQPJTqKJp0kOVlpn0VENoxroqCEtjUQNMjIMQwYAAIAPYGJ54gHnAAAAAElFTkSuQmCC'
 
 
-with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
+#with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
+with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
     device_list = connection.detect_devices() 
     xy_device = device_list[0]
     z_device = device_list[1]
@@ -297,7 +298,7 @@ with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
         ],
     ]
 
-    window = sg.Window('Zaber GUI', layout, size = (700,700), element_justification='c')
+    window = sg.Window('Zaber GUI', layout, size = (1000,700), element_justification='c')
 
     while True:
         event, values = window.read()
