@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider 
 import numpy as np
 import pandas as pd
 from numpy import genfromtxt
+from scipy.interpolate import UnivaraiteSpline
 
 df = pd.read_csv('/Users/kayleemolin/Desktop/summer_project/ZaberGUI/movementData.csv')
 
@@ -24,17 +26,22 @@ def simple_plot():
 def xy_plot():
     plt.plot(x,y)
     plt.xlabel("x")
-    plt.ylabel("x")
+    plt.ylabel("y")
     plt.show()
     
 def xz_plot():
     plt.plot(x,z)
+    plt.xlabel("x")
+    plt.ylabel("y")
     plt.show()
     
 def yz_plot():
     plt.plot(y,z)
+    plt.xlabel("x")
+    plt.ylabel("y")
     plt.show()
     
 xy_plot()
-xz_plot()
-yz_plot()
+#xz_plot()
+#yz_plot()
+#simple_plot()

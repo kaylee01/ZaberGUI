@@ -311,7 +311,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
                         border_width=1)]
         ]  
 
-    window = sg.Window('Zaber GUI', tabgrp, size = (1000,750), element_justification='c')
+    window = sg.Window('Zaber GUI', tabgrp, size = (750,750), element_justification='c')
 
     while True:
         event, values = window.read()
