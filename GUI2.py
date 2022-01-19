@@ -277,20 +277,20 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         [   
             sg.Text("Set step size:", font='Any 16'),
             sg.InputText(key="-STEP-", size=(5,1)),
-            sg.Text("{} mm".format(DIST), key="-mm-", font='Any 16'),
-            #sg.Button("OK", key="-OK-", bind_return_key=True), 
-            sg.Button('', image_data=tick164,button_color=('white', 'white'), pad=(0,0), key='-OK-'),
+            sg.Text("{} mm".format(DIST), key="-mm-", font='Any 16'), 
+            sg.Button("OK", key="-OK-", bind_return_key=True),
+            #sg.Button('', image_data=tick164,button_color=('white', 'white'), pad=(0,0), key='-OK-'),
         ],
         [sg.Column(col1, element_justification='c' ), sg.Column(col_buffer), sg.Column(col2, element_justification='c' )],
         [
-            sg.Text("Relative movements (x,y,z):"), 
+            sg.Text("Relative movements (x,y,z):", font = 'Any 16'), 
             sg.InputText(key='-INXRel-', size=(3,1)), 
             sg.InputText(key='-INYRel-', size=(3,1)), 
             sg.InputText(key='-INZRel-', size=(3,1)),
             sg.Button("OK", key="-OK2-", bind_return_key=True)
         ],
         [
-            sg.Text("Move to absolute position (x,y,z):"), 
+            sg.Text("Move to absolute position (x,y,z):", font = 'Any 16'), 
             sg.InputText(key='-INX-', size=(3,1)), 
             sg.InputText(key='-INY-', size=(3,1)), 
             sg.InputText(key='-INZ-', size=(3,1)),
@@ -298,7 +298,20 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         ],
     ]
 
-    window = sg.Window('Zaber GUI', layout, size = (1000,700), element_justification='c')
+    lol=[[sg.Text('Highest Qualfication', size=(15,1)),sg.Input('',key='eQual')],
+           [sg.Text('Year of Qualifying', size=(15,1)),sg.Input('',key='eYoq')],
+           [sg.Text('Grade', size=(15,1)),sg.Input('',key='eGrade')],
+           [sg.Text('University/College', size=(15,1)),sg.Input('',key='eQUniv')],
+         [sg.Button('Save Education Details')]]
+
+    tabgrp = [
+    [sg.TabGroup([[sg.Tab('Movement', layout, element_justification= 'center'),
+                    sg.Tab('Modelling', lol,),
+                    ]], tab_location='centertop',
+                        border_width=1)]
+        ]  
+
+    window = sg.Window('Zaber GUI', tabgrp, size = (1000,750), element_justification='c')
 
     while True:
         event, values = window.read()
