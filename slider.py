@@ -9,16 +9,8 @@ df = pd.read_csv('/Users/kayleemolin/Desktop/summer_project/ZaberGUI/movementDat
 
 t = df["t"]
 x = df["x"]
-minx=min(x)
-maxx=max(x)
-
 y = df["y"]
-miny=min(y)
-maxy=max(y)
-
 z = df["z"]
-minz=min(z)
-maxz=max(z)
 
 init_i = 0
 
@@ -26,8 +18,6 @@ init_i = 0
 fig, ax = plt.subplots()
 line, = plt.plot(x[init_i],y[init_i], "bo")
 plt.plot(x,y, alpha=0.1)
-#ax.set_xlim(minx,maxx)
-#ax.set_ylim(miny,maxy)
 ax.set_xlabel('x position')
 ax.set_ylabel('y position')
 
