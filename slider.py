@@ -16,7 +16,7 @@ init_i = 0
 
 # Create the figure and the line that we will manipulate
 fig, ax = plt.subplots()
-line, = plt.plot(x[init_i],y[init_i], "bo")
+line, = plt.plot(x[init_i],y[init_i], "bD")
 plt.plot(x,y, alpha=0.1)
 ax.set_xlabel('x position')
 ax.set_ylabel('y position')
@@ -24,10 +24,10 @@ ax.set_ylabel('y position')
 # adjust the main plot to make room for the sliders
 plt.subplots_adjust(left=0.15, bottom=0.25)
 
-# Make a horizontal slider to control the frequency.
-axfreq = plt.axes([0.15, 0.1, 0.65, 0.03])
+# Make a horizontal slider to control the time.
+axtime = plt.axes([0.15, 0.1, 0.65, 0.03])
 freq_slider = Slider(
-    ax=axfreq,
+    ax=axtime,
     label='Time',
     valmin=0,
     valmax=2500,

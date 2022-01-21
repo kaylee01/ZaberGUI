@@ -9,16 +9,8 @@ df = pd.read_csv('/Users/kayleemolin/Desktop/summer_project/ZaberGUI/movementDat
 
 t = df["t"]
 x = df["x"]
-minx=min(x)
-maxx=max(x)
-
 y = df["y"]
-miny=min(y)
-maxy=max(y)
-
 z = df["z"]
-minz=min(z)
-maxz=max(z)
 
 init_i = 0
 
@@ -42,10 +34,10 @@ ax.set_zlabel('z position')
 # adjust the main plot to make room for the sliders
 plt.subplots_adjust(left=0.15, bottom=0.25)
 
-# Make a horizontal slider to control the frequency.
-axfreq = plt.axes([0.15, 0.1, 0.65, 0.03])
+# Make a horizontal slider to control the time.
+axtime = plt.axes([0.15, 0.1, 0.65, 0.03])
 freq_slider = Slider(
-    ax=axfreq,
+    ax=axtime,
     label='Time',
     valmin=0,
     valmax=2500,
@@ -63,7 +55,7 @@ def update(val):
     line.set_3d_properties(z[val])'''
 
     mylines[0].set_xdata(x[val])
-    mylines[0].set_ydata(x[val])
+    mylines[0].set_ydata(y[val])
     mylines[0].set_3d_properties(z[val])
     
     fig.canvas.draw_idle()
