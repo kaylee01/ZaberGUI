@@ -1,3 +1,9 @@
+'''
+Written by Kaylee Molin 21/01/2022
+
+Plots the position of a tumour in the x and y plane. Slider for time.
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
@@ -17,7 +23,7 @@ init_i = 0
 # Create the figure and the line that we will manipulate
 fig, ax = plt.subplots()
 line, = plt.plot(x[init_i],y[init_i], "bD")
-plt.plot(x,y, alpha=0.1)
+plt.plot(x,y, alpha=0.1)    #transparent line
 ax.set_xlabel('x position')
 ax.set_ylabel('y position')
 
