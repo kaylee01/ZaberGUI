@@ -29,7 +29,7 @@ ax.set_xlabel('x position')
 ax.set_ylabel('y position')
 ax.set_zlabel('z position')
 
-l=ax.plot(x[init_i],y[init_i],z[init_i], "bo")
+l=ax.plot(x[0],y[0],z[0], "bo")
 ax.plot(x,y,z, alpha=0.2)
 
 # Make a horizontal slider to control the time.
@@ -39,7 +39,7 @@ freq_slider = Slider(
     label='Time',
     valmin=0,
     valmax=2500,
-    valinit=init_i,
+    valinit=0,
     valstep=1
 )
 
@@ -47,10 +47,7 @@ def update(val):
     h = freq_slider.val 
     ax.clear()
     l=ax.plot(x[h],y[h],z[h], "bo")
-    ax.plot(x,y,z, alpha=0.1)
-    ax.set_xlim(min(x),max(x))
-    ax.set_ylim(min(y),max(y))
-    ax.set_zlim(min(z),max(z))
+    ax.plot(x,y,z, alpha=0.2)
     ax.set_xlabel('x position')
     ax.set_ylabel('y position')
     ax.set_zlabel('z position')
