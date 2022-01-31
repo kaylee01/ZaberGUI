@@ -5,6 +5,11 @@ from zaber_motion import Library, Units
 from zaber_motion.ascii import Connection
 from zaber_motion.ascii import Lockstep
 import time
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.widgets import Slider, Button, RadioButtons
+import pandas as pd
 
 ''' to do: deal with not integer inputs
 make other ok button go on enter
@@ -206,6 +211,76 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         axis2.move_absolute(MAX_Y/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
+
+
+    def load_csv(csv_path):
+        df = pd.read_csv(csv_path)
+        t = df["t"]
+        x = df["x"]
+        y = df["y"]
+        z = df["z"]
+
+        return t,x,y,z
+
+    def plotter(x,y,z):
+        fig = plt.figure()
+        plt.subplots_adjust(bottom=0.25) 
+        
+        ax = fig.add_subplot(111, projection='3d') 
+        ax.set_xlabel('x position')
+        ax.set_ylabel('y position')
+        ax.set_zlabel('z position')
+
+        l=ax.plot(x[0],y[0],z[0], "bo")
+        ax.plot(x,y,z, alpha=0.2)
+
+        return plt, fig, ax
+
+
+    def create_slider(plt,fig,ax):
+
+        # Make a horizontal slider to control the time.
+        axtime = plt.axes([0.15, 0.1, 0.65, 0.03])
+        freq_slider = Slider(
+            ax=axtime,
+            label='Time',
+            valmin=0,
+            valmax=2500,
+            valinit=0,
+            valstep=1
+        )
+
+        return freq_slider
+
+    def display(filename):
+        t,x,y,z = load_csv(filename)
+
+        plt, fig, ax = plotter(x,y,z)
+        freq_slider = create_slider(plt,fig,ax)
+
+        def update(val): 
+            h = freq_slider.val 
+            ax.clear()
+            l=ax.plot(x[h],y[h],z[h], "bo")
+            ax.plot(x,y,z, alpha=0.2)
+            ax.set_xlabel('x position')
+            ax.set_ylabel('y position')
+            ax.set_zlabel('z position')
+            
+            fig.canvas.draw_idle()
+            
+        freq_slider.on_changed(update)
+
+        plt.show()
+
+
+
+
+
+
+
+
+
     col2 = [
         [sg.Button('', image_data=Uparrow64,button_color=('white', 'white'), pad=(0,0), key='-ZREND-')],
         [sg.Button('', image_data=uparrow64,button_color=('white', 'white'), pad=(0,0), key='-ZRIGHT-')],
@@ -298,15 +373,18 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         ],
     ]
 
-    lol=[[sg.Text('Highest Qualfication', size=(15,1)),sg.Input('',key='eQual')],
-           [sg.Text('Year of Qualifying', size=(15,1)),sg.Input('',key='eYoq')],
-           [sg.Text('Grade', size=(15,1)),sg.Input('',key='eGrade')],
-           [sg.Text('University/College', size=(15,1)),sg.Input('',key='eQUniv')],
-         [sg.Button('Save Education Details')]]
+    plot=[
+        [
+            sg.Text('Select csv file', font = 'Any 16',),
+            sg.Input(), 
+            sg.FileBrowse('FileBrowse', file_types=(("CSV files", "*.csv"),)), 
+            sg.Button("Display", key="-FILE-")
+        ],
+    ]
 
     tabgrp = [
     [sg.TabGroup([[sg.Tab('Movement', layout, element_justification= 'center'),
-                    sg.Tab('Modelling', lol,),
+                    sg.Tab('Modelling', plot,),
                     ]], tab_location='centertop',
                         border_width=1)]
         ]  
@@ -386,6 +464,15 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             #window["-INXRel-"].update("")
             #window["-INYRel-"].update("")
             #window["-INZRel-"].update("")
+        
+        if event == "-FILE-":
+            pathname = values['FileBrowse']
+            if pathname.lower().endswith((".csv")):
+                display(pathname)
+            else:
+                sg.popup_no_wait("Only CSV file types are supported.", title="max", button_color=("White", "Red"))
+
+                
 
 
         #axis1.wait_until_idle()
