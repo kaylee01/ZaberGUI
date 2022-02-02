@@ -212,32 +212,42 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
 
-
+# PLOTTER (check this works) it does :))))
     def load_csv(csv_path):
         df = pd.read_csv(csv_path)
         t = df["t"]
+        maxt = len(t)-1
         x = df["x"]
         y = df["y"]
         z = df["z"]
 
-        return t,x,y,z
+        return t,x,y,z, maxt
 
-    def plotter(x,y,z):
-        fig = plt.figure()
+    def plotter(x,y,z,t):
+        #fig = plt.subplot(2, 1, 1)
+        fig = plt.figure(figsize=(8, 8))    # window size
         plt.subplots_adjust(bottom=0.25) 
         
-        ax = fig.add_subplot(111, projection='3d') 
-        ax.set_xlabel('x position')
-        ax.set_ylabel('y position')
-        ax.set_zlabel('z position')
+        ax = fig.add_subplot(212, projection='3d') 
+        ax.set_xlabel('x position (mm)')
+        ax.set_ylabel('y position (mm)')
+        ax.set_zlabel('z position (mm)')
 
         l=ax.plot(x[0],y[0],z[0], "bo")
         ax.plot(x,y,z, alpha=0.2)
 
+        ax2 = fig.add_subplot(211)
+        ax2.set_xlabel('time')
+        ax2.set_ylabel('displacement (mm)')
+        ax2.plot(t, x, label='x')
+        ax2.plot(t, y, label='y')
+        ax2.plot(t, z, label='z')
+        ax2.legend()
+
         return plt, fig, ax
 
 
-    def create_slider(plt,fig,ax):
+    def create_slider(plt,fig,ax,maxt):
 
         # Make a horizontal slider to control the time.
         axtime = plt.axes([0.15, 0.1, 0.65, 0.03])
@@ -245,27 +255,27 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             ax=axtime,
             label='Time',
             valmin=0,
-            valmax=2500,
+            valmax=maxt,
             valinit=0,
-            valstep=1
+            valstep=1,
         )
 
         return freq_slider
 
     def display(filename):
-        t,x,y,z = load_csv(filename)
+        t,x,y,z,maxt = load_csv(filename)
 
-        plt, fig, ax = plotter(x,y,z)
-        freq_slider = create_slider(plt,fig,ax)
+        plt, fig, ax = plotter(x,y,z,t)
+        freq_slider = create_slider(plt,fig,ax,maxt)
 
         def update(val): 
             h = freq_slider.val 
             ax.clear()
             l=ax.plot(x[h],y[h],z[h], "bo")
             ax.plot(x,y,z, alpha=0.2)
-            ax.set_xlabel('x position')
-            ax.set_ylabel('y position')
-            ax.set_zlabel('z position')
+            ax.set_xlabel('x position (mm)')
+            ax.set_ylabel('y position (mm)')
+            ax.set_zlabel('z position (mm)')
             
             fig.canvas.draw_idle()
             
