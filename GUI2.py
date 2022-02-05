@@ -10,16 +10,14 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.widgets import Slider, Button, RadioButtons
 import pandas as pd
-
-''' to do: deal with not integer inputs
-make other ok button go on enter
-do send to specific location'''
-
-Library.enable_device_db_store()
-
 import sys
 import glob
 import serial
+
+''' to do: deal with not integer inputs
+make other ok button go on enter'''
+
+Library.enable_device_db_store()
 
 sg.theme('Reddit')
 
@@ -28,8 +26,11 @@ MAX_X = 151.49909375
 MAX_Y = 151.49909375
 MAX_Z = 40.000047
 
-# move distance in mm
+# initial move distance in mm
 DIST = 15
+
+# connection path (to be selected)
+SERIAL_PATH = "/dev/tty.usbmodem11301" # this is my one (remove at end)
 
 left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAAqv8AgL8chNkiiNUhhNYfhNcghNgghdgfhNggg9ggg9gghNgghNgghNgghNgghNj///90+N/XAAAAEHRSTlMAAwQbHh86j5CipanF3d/06MxMzgAAAAFiS0dEEeK1PboAAABcSURBVFjD7ZZJCoBAEMTc9yX/f60HfzABQa3cE+iBobuqQgjvodvO0fj9AQzSF4Hbn8vn3wHWJn78P/rtAbDUxR9okr4P6BH0I6aQwhcLdrn69e4PDH/ihBAe4QJu2Ax3gaY3zgAAAABJRU5ErkJggg=='
 Left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAPFBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNchg9ghhNghhdgghNkfhNghhdgghNgghNgghNgfhNgghNgghNj///9MJE9iAAAAEnRSTlMACyAhSUpTVFVWV1tc2eT5+/yS4ZH/AAAAAWJLR0QTDLtclgAAAHJJREFUWMPtlUkOwCAMA6ErpQvB/39s75VCQDnWcxsJW8oFh0AIIR3Ma2y6xVFwx4ZbZAGw6N6VL5PqXXlJqlskAVBP1ZlnvsUmACSrbvJ83j+DeX+B+4SwC4B6qc4GNow1eL91/7D4p80/rv55J4T8ixeaxhdxB5W+RQAAAABJRU5ErkJggg=='
@@ -51,13 +52,14 @@ tick164 ='iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAQlBMVEUAAAAXi9Egh9cfg9
 axis64 = 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAABU1BMVEUAAAAA//8Aqv8AgL8rgNUkktscjuMagMwzgMwkktsggN8khtsjgNwfhdYchNkkgNsjjdwng9geh9odg9skitMjh9UjhdYfhdsihNgfhtchhtkfhdgig9ohg9cfhdohhNcghNgfh9whhdghhdkghNcfg9gfhtghg9khhdcgg9cfhdYghNggg9kfhdchhNchhNoghdgfhtkhhNgghNkhgtghhNgfg9gfhNghg9kghNohhNghhNoghdgggtgfhNgfhNgghNchhdgghNghhNgfhdgfhNcgg9cgg9gghNgghNghg9cghNgghNkfhNghhNgfhdchg9gfhNgghNgghNkghNkghNgghNgghNgghdgghNghhdkhg9gghNcghdkhhNghhNgghNgghdgghNgghNkghNghg9kghNgghNgghNcfhNgfhNkghNgghNcghNgghdgghNj///8PhQorAAAAb3RSTlMAAQMEBgcJCgoOEBUWGRscHSEiIyMkLDI0OT1BREZLTU9RVl5fY2NlZmdrcHFzdHR3enx+g4OKi4yPkZGWl5ykpqmqqqusra+4ubm/wcPJzMzN0NDU1tjc4eLi4+bo6evs7O/v8PP29/j7/f3+/v7kcviWAAAAAWJLR0Rw2ABsdAAAAQRJREFUSMdjYKAikNZkYmCQVSZeg3CYJQO/QyBRahktzBkZGEzjBUwTRYjSYJyfb8TAwOYd7GNHlHr57Jy8bDkGBsXoWFZi1Ium5Ofm5icJMzB7OhNlgW6+U36+S74OA7OHI1Ea2BXY8vPZFNiJ1gAE+fkgkinInjQNJABUDUIaXAwMSpLEaxCL02fQipIiwUnuXuKRVqT4gTPBP4CPJE/bZpiQFkohqTYspGgwDNeOUCNBA0eMGYOfKy/xGtxCuRkEk61J8QOPHjdpnjbIj5QgSQO3b366CoyjmplPBMjKz9eAalAnVQPJTqKJp0kOVlpn0VENoxroqCEtjUQNMjIMQwYAAIAPYGJ54gHnAAAAAElFTkSuQmCC'
 
 
+# selecting the serial connection
+# serial stuff here
+
 #with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
-with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
+with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection: #need to automate
     device_list = connection.detect_devices() 
     xy_device = device_list[0]
     z_device = device_list[1]
-
-    
 
     axis1 = xy_device.get_axis(1)  # x
     axis2 = xy_device.get_axis(2)  # y
@@ -82,6 +84,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         return False
 
     def move_right(axis, step):
+        ''' moves the specified axis to the right by the step amount '''
 
         if axis == axis1:   max, coord = MAX_X, "x"
         if axis == axis2:   max, coord = MAX_Y, "y"
@@ -95,6 +98,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             
 
     def move_left(axis, step):
+        ''' moves the specified axis to the left by the step amount '''
 
         if axis == axis1:   max, coord = MAX_X, "x"
         if axis == axis2:   max, coord = MAX_Y, "y"
@@ -107,6 +111,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
                 
     def move_small_end(axis):
+        ''' if the axis is closer than a 'step' distance away from the small edge, it will be moved to the edge using this function '''
         if axis == axis1:   coord = "x"
         if axis == axis2:   coord = "y"
         if axis == axis3:   coord = "z"
@@ -117,6 +122,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             sg.popup_no_wait("You are at min {} position".format(coord), title="max", button_color=("White", "Red"))
 
     def move_big_end(axis):
+        ''' if the axis is closer than a 'step' distance away from the far edge, it will be moved to the edge using this function '''
         if axis == axis1:   max, coord = MAX_X, "x"
         if axis == axis2:   max, coord = MAX_Y, "y"
         if axis == axis3:   max, coord = MAX_Z, "z"
@@ -163,6 +169,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
                 sg.popup_no_wait("Please enter a valid Z postion.\n Z: (0 to 40.00) mm", title = "Z error", button_color = ("White", "Red"))
 
     def move_rel(x,y,z):
+        ''' moves the platform by the inputted amounts '''
         if x != "":
             try:
                 if float(x) < 0:
@@ -196,6 +203,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
 
 
     def set_step(step):
+        ''' change step size to inputted value'''
         try:
             if float(step) >= 0:
                 global DIST 
@@ -207,13 +215,15 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
             sg.popup("Please enter a valid step size.", title="Step size error", button_color=("White", "Red"))
 
     def centre():
+        ''' moves platfrom to the centre '''
         axis1.move_absolute(MAX_X/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         axis2.move_absolute(MAX_Y/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
         axis3.move_absolute(MAX_Z/2, Units.LENGTH_MILLIMETRES, wait_until_idle=False)
 
 
-# PLOTTER (check this works) it does :))))
+# PLOTTER (make try and except function to account for errors. Maybe make it look for t column etc.)
     def load_csv(csv_path):
+        ''' the inputted csv file must have columns t,x,y,z in this order for this to work '''
         df = pd.read_csv(csv_path)
         t = df["t"]
         maxt = len(t)-1
@@ -224,6 +234,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         return t,x,y,z, maxt
 
     def plotter(x,y,z,t):
+        ''' plots to graphs in the window. The bottom plot is an interactive 3d representation of the tumour movement'''
         #fig = plt.subplot(2, 1, 1)
         fig = plt.figure(figsize=(8, 8))    # window size
         plt.subplots_adjust(bottom=0.25) 
@@ -237,7 +248,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         ax.plot(x,y,z, alpha=0.2)
 
         ax2 = fig.add_subplot(211)
-        ax2.set_xlabel('time')
+        ax2.set_xlabel('time (s)')
         ax2.set_ylabel('displacement (mm)')
         ax2.plot(t, x, label='x')
         ax2.plot(t, y, label='y')
@@ -282,13 +293,6 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         freq_slider.on_changed(update)
 
         plt.show()
-
-
-
-
-
-
-
 
 
     col2 = [
@@ -340,6 +344,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
     layout = [
         [
             #sg.Button("STOP pls", key="-STOP-", )
+            # change stop64 to icons.stop.base64
             sg.Button('', image_data=stop64,button_color=('white', 'white'), pad=(0,0), key='-STOP-'),
             sg.Button('', image_data=home64,button_color=('white', 'white'), pad=(0,0), key='-HOME-'),
             sg.Button('', image_data=centre64,button_color=('white', 'white'), pad=(0,0), key='-CENTRE-'),
@@ -368,7 +373,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
         ],
         [sg.Column(col1, element_justification='c' ), sg.Column(col_buffer), sg.Column(col2, element_justification='c' )],
         [
-            sg.Text("Relative movements (x,y,z):", font = 'Any 16'), 
+            sg.Text("Relative movements (x,y,z):         ", font = 'Any 16'), 
             sg.InputText(key='-INXRel-', size=(3,1)), 
             sg.InputText(key='-INYRel-', size=(3,1)), 
             sg.InputText(key='-INZRel-', size=(3,1)),
@@ -401,6 +406,7 @@ with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection:
 
     window = sg.Window('Zaber GUI', tabgrp, size = (750,750), element_justification='c')
 
+    # start of event loop
     while True:
         event, values = window.read()
         
