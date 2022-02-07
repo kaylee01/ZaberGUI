@@ -30,7 +30,7 @@ MAX_Z = 40.000047
 DIST = 15
 
 # connection path (to be selected)
-SERIAL_PATH = "/dev/tty.usbmodem11301" # this is my one (remove at end)
+#SERIAL_PATH = "/dev/tty.usbmodem11301" # this is my one (remove at end)
 
 left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAANlBMVEUAAAAAqv8AgL8chNkiiNUhhNYfhNcghNgghdgfhNggg9ggg9gghNgghNgghNgghNgghNj///90+N/XAAAAEHRSTlMAAwQbHh86j5CipanF3d/06MxMzgAAAAFiS0dEEeK1PboAAABcSURBVFjD7ZZJCoBAEMTc9yX/f60HfzABQa3cE+iBobuqQgjvodvO0fj9AQzSF4Hbn8vn3wHWJn78P/rtAbDUxR9okr4P6BH0I6aQwhcLdrn69e4PDH/ihBAe4QJu2Ax3gaY3zgAAAABJRU5ErkJggg=='
 Left64 = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAPFBMVEUAAAAXi9Egh9cfg9gfhdkfg9kfhNchg9ghhNghhdgghNkfhNghhdgghNgghNgghNgfhNgghNgghNj///9MJE9iAAAAEnRSTlMACyAhSUpTVFVWV1tc2eT5+/yS4ZH/AAAAAWJLR0QTDLtclgAAAHJJREFUWMPtlUkOwCAMA6ErpQvB/39s75VCQDnWcxsJW8oFh0AIIR3Ma2y6xVFwx4ZbZAGw6N6VL5PqXXlJqlskAVBP1ZlnvsUmACSrbvJ83j+DeX+B+4SwC4B6qc4GNow1eL91/7D4p80/rv55J4T8ixeaxhdxB5W+RQAAAABJRU5ErkJggg=='
@@ -56,7 +56,8 @@ axis64 = 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAABU1BMVEUAAAAA//8Aqv8AgL
 # serial stuff here
 
 #with Connection.open_serial_port("/dev/cu.usbmodem1101") as connection:
-with Connection.open_serial_port("/dev/tty.usbmodem11301") as connection: #need to automate
+
+with Connection.open_serial_port(serial.SERIAL_PATH) as connection: #need to automate
     device_list = connection.detect_devices() 
     xy_device = device_list[0]
     z_device = device_list[1]
