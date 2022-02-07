@@ -44,7 +44,7 @@ layoutSerial2 = [
     [sg.Button('OK', key='-OKSERIAL-'), sg.Exit()]
           ]
 
-window = sg.Window('Serial Connection', layoutSerial)    
+window = sg.Window('Serial Connection', layoutSerial2)    
 
 ok_count = 0
 connection_list = []
